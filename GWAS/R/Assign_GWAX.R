@@ -1,3 +1,4 @@
+library(tidyverse)
 #' Assing GWAX function
 #'
 #' This function assigns phenotypes based on GWAX.
@@ -6,7 +7,7 @@
 #' @keywords gwax
 #' @export
 #' @examples
-#' cat_function()
+#' Assign_GWAX()
 Assign_GWAX <- function(true, with_sib = 1){
   res <- true %>%
     as_tibble()%>%

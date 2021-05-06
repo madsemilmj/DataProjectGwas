@@ -15,6 +15,6 @@ Assign_GWAX(true, with_sib = 1)
 This function assigns phenotypes based on GWAX.
 }
 \examples{
-cat_function()
+Assign_GWAX()
 }
 \keyword{gwax}
