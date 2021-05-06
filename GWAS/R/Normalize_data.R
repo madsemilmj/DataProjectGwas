@@ -1,4 +1,4 @@
-#' Assing GWAX function
+#' Normalize_data function
 #'
 #' This function assigns phenotypes based on GWAX.
 #' @param df Is a matrix/data-frame that we want to Normalize (number_of_indivs X SNPs)

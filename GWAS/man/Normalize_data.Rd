@@ -2,7 +2,7 @@
 % Please edit documentation in R/Normalize_data.R
 \name{Normalize_data}
 \alias{Normalize_data}
-\title{Assing GWAX function}
+\title{Normalize_data function}
 \usage{
 Normalize_data(df, MAF)
 }
