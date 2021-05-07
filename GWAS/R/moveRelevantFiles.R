@@ -69,7 +69,7 @@ moveRelevantFiles <- function(total_indiv, SNP, h, k){
   #Moving LTFH_1.qassoc
   LTFH_1_qassoc <- fread(paste("./LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.qassoc", sep=""))
   fwrite(as.data.table(LTFH_1_qassoc),
-         paste("../dataprojekt_shiny_app/ata/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.qassoc", sep=""),
+         paste("../dataprojekt_shiny_app/data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.qassoc", sep=""),
          quote = F,
          sep = " ",
          col.names = T)
@@ -77,7 +77,7 @@ moveRelevantFiles <- function(total_indiv, SNP, h, k){
   #Moving MAF
   MAF <- fread(paste("./MAF","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""))
   fwrite(as.data.table(MAF),
-         paste("../dataprojekt_shiny_app/ata/MAF","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""),
+         paste("../dataprojekt_shiny_app/data/MAF","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""),
          quote = F,
          sep = " ",
          col.names = T)
