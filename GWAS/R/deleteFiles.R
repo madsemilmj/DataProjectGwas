@@ -43,5 +43,8 @@ deleteFiles <- function(total_indiv, SNP, h, k){
     if (file.exists(file)){
       file.remove(file)
     }
+    else {
+      print(paste("Could not find file: ", file, sep=""))
+    }
   }
 }
