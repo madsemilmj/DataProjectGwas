@@ -24,7 +24,7 @@ getMeanSD <- function(total_indiv, SNP, h, Child_i, Mom_i, Dad_i, Nr_sib_i=0, Si
     filter(Child == Child_i & Mom == Mom_i & Dad == Dad_i & Nr_sib == Nr_sib_i & Sib_status == Sib_status_i)%>%
     select(Pheno, SDs)
   if (nrow(df)==0){
-    print("FUCK MAN!")
+    #print("FUCK MAN!")
     return(-1)
   }
   else {

@@ -19,7 +19,7 @@ library(tidyverse)
 
 plosteriot <- function(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib=0, Sib_status=0){
   res <- getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib, Sib_status)
-  if (res != -1){
+  if is.list(res){
     data.frame(x = c(-3, 3)) %>% ggplot(aes(x)) +
       geom_vline(xintercept = res$mean, linetype = "longdash", colour = "black", alpha = 1, size =1) +
       stat_function(fun = dnorm,
