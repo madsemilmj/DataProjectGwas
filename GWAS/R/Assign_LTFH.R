@@ -118,7 +118,7 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
     mutate(FID = ID) %>%
     rename(Pheno = means) %>%
     rename(IID = ID) %>%
-    select(FID,IID, Pheno, SDs)
+    select(FID,IID,Child, Mom, Dad, Nr_sib, Sib_status, Pheno, SDs)
   #})
   return(result)
 }
