@@ -31,7 +31,9 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
   #Making a pheno-file for LTFH with sib
   ltfh_pheno_1 <- Assign_LTFH(Pheno_data = ny_true,
                               valT = k, h2 = h)
-  fwrite(as.data.table(ltfh_pheno_1),
+  lfth_pheno_1_selected <- ltfh_pheno_1 %>%
+    select(FID,IID,Pheno)
+  fwrite(as.data.table(ltfh_pheno_1_selected),
          paste("./Pheno_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1",".txt", sep=""),
          quote = F,
          sep = " ",
@@ -39,12 +41,30 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
   #Making a pheno_file for LTFH without sib
   ltfh_pheno_0 <- Assign_LTFH(Pheno_data = ny_true,
                               valT = k, h2 = h, with_sib = 0)
-  fwrite(as.data.table(ltfh_pheno_0),
+  lfth_pheno_0_selected <- ltfh_pheno_0 %>%
+    select(FID,IID,Pheno)
+
+  fwrite(as.data.table(ltfh_pheno_0_selected),
          paste("./Pheno_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0",".txt", sep=""),
          quote = F,
          sep = " ",
          col.names = T)
-  
+
+
+  #Making histogram-files LTFH with sib
+  fwrite(as.data.table(ltfh_pheno_1),
+         paste("./Dist_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1",".txt", sep=""),
+         quote = F,
+         sep = " ",
+         col.names = T)
+
+  #Making histogram-files LTFH without sib
+  fwrite(as.data.table(ltfh_pheno_0),
+         paste("./Dist_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0",".txt", sep=""),
+         quote = F,
+         sep = " ",
+         col.names = T)
+
   #Making a pheno_file for GWAX with sib
   gwax_pheno_1 <- Assign_GWAX(true = ny_true)
   fwrite(as.data.table(gwax_pheno_1),
@@ -52,7 +72,7 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
          quote = F,
          sep = " ",
          col.names = T)
-  
+
   #Making a pheno_file for GWAX with out sib
   gwax_pheno_0 <- Assign_GWAX(true = ny_true, with_sib = 0)
   fwrite(as.data.table(gwax_pheno_0),
@@ -60,5 +80,5 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
          quote = F,
          sep = " ",
          col.names = T)
-  
+
 }
