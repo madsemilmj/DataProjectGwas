@@ -21,9 +21,9 @@ library(flock)
 
 
 SimulerData <- function(total_indiv, indiv_chunk, SNP, h, c, k, nr_workers) {
-  loader <- image_read("./giphy.gif")
+  #loader <- image_read("./giphy.gif")
   print("Simulation started, DONE! will be printed when the simulaiton is done")
-  print(loader)
+  #print(loader)
   t <- qnorm(1-k, 0, 1)
   MAF <- runif(n = SNP, min = 0.01, max = 0.49) # Simulating #SNP probabilities.
   #Generating MAP file for plink
