@@ -244,6 +244,6 @@ SimulerData <- function(total_indiv, indiv_chunk, SNP, h, c, k, nr_workers) {
     rm(for_plink,PHENO)
   }, future.seed = T)
 
-  writeLines(paste("DONE!"))
+  print("DONE!")
 
 }

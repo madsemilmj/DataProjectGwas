@@ -22,17 +22,17 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
     Pheno_data$Nr_sib <- 0
     Pheno_data$Sib_status <- 0
   }
-  
+
   Combos <- Pheno_data %>%
     as_tibble() %>%
     distinct(Child, Mom, Dad, Nr_sib, Sib_status)
-  
+
   sib_status_comb <- Combos %>%
     distinct(Nr_sib,Sib_status) %>%
     as.matrix()
-  
+
   Combos <- as.matrix(Combos)
-  
+
   for (i in 1:nrow(sib_status_comb)){
     row <- sib_status_comb[i,]
     ##If c(0,1,0) for that sib_status_comb is present delete c(0,0,1) for that comb
@@ -48,9 +48,10 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
       }
     }
   }
-  
+
   means <- numeric(nrow(Combos))
   SEs <- numeric(nrow(Combos))
+  SDs <- numeric(nrow(Combos))
   for(j in 1:nrow(Combos)){
     row <- Combos[j,]
     nr_sib <- row[4]
@@ -65,7 +66,7 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
       UpperBound2[c] <- Inf
       c <- c-1
     }
-    
+
     LowerBound <- c(LowerBound1,LowerBound2)
     UpperBound <- c(UpperBound1,UpperBound2)
     CovMatrix <- LinearTransformation(CovarianceMatrix(h2,nr_sib))
@@ -92,15 +93,16 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
     real_sample <- my_sample[Burn_in:S,]
     eps_g_mean <- mean(real_sample[,1])
     SEs[j] <- sem(real_sample[,1])
-    means[j] <- eps_g_mean  
+    means[j] <- eps_g_mean
+    SDs[j] <- sd(real_sample[,1])
   }
-  
+
   Ny_combos <- cbind(Combos,means)%>%
     as_tibble()
-  
+
   Ny_pheno <- left_join(as_tibble(Pheno_data),Ny_combos,by = c("Child"="Child", "Mom"= "Mom", "Dad" = "Dad", "Nr_sib" = "Nr_sib", "Sib_status" = "Sib_status"))
-  
-  
+
+
   #ADDING THOSE THAT WE DELETED
   Missing <- Ny_pheno %>%
     filter(is.na(means))%>%
@@ -108,7 +110,7 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
     rename_with(tolower)%>%
     rowwise() %>%
     mutate(means = filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$means)
-  
+
   result <- left_join(Ny_pheno,Missing,by = c("Child"="child", "Mom"= "mom", "Dad" = "dad", "Nr_sib" = "nr_sib", "Sib_status" = "sib_status")) %>%
     mutate(means = coalesce(means.x, means.y)) %>%
     mutate(FID = ID) %>%
