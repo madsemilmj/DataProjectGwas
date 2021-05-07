@@ -17,7 +17,7 @@ library(tidyverse)
 #' plosteriot(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib=0, Sib_status=0)
 
 
-plosteriot <- function(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib=0, Sib_status=0){
+plosteriot <- function(total_indiv, SNP, h, Child=0, Mom=0, Dad=0, Nr_sib=0, Sib_status=0){
   res <- getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib, Sib_status)
   if (is.list(res)){
     data.frame(x = c(-3, 3)) %>% ggplot(aes(x)) +
