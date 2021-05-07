@@ -31,13 +31,11 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
   #Making a pheno-file for LTFH with sib
   ltfh_pheno_1 <- Assign_LTFH(Pheno_data = ny_true,
                               valT = k, h2 = h)
-  print("LOLL")
   lfth_pheno_1_selected <- ltfh_pheno_1 %>%
     select(FID,IID,Pheno)
-  print("HEJ")
-  print(lfth_pheno_1_selected)
 
-  fwrite(as.data.table(ltfh_pheno_1_selected),
+
+  fwrite(as.data.table(lfth_pheno_1_selected),
          paste("./Pheno_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1",".txt", sep=""),
          quote = F,
          sep = " ",
