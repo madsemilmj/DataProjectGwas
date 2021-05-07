@@ -91,4 +91,7 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
   #Moverelevantfiles
   moveRelevantFiles(total_indiv, SNP, h, k)
 
+  #Delete files
+  deleteFiles(total_indiv, SNP, h, k)
+
 }
