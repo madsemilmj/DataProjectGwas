@@ -46,7 +46,7 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
   lfth_pheno_0_selected <- ltfh_pheno_0 %>%
     select(FID,IID,Pheno)
 
-  fwrite(as.data.table(ltfh_pheno_0_selected),
+  fwrite(as.data.table(lfth_pheno_0_selected),
          paste("./Pheno_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0",".txt", sep=""),
          quote = F,
          sep = " ",
