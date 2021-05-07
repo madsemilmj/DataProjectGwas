@@ -82,5 +82,13 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
          quote = F,
          sep = " ",
          col.names = T)
+  #Makebed function
+  makeBed(total_indiv, SNP, h, k)
+
+  #Rungwas
+  gwasPlink(total_indiv, SNP, h, k)
+
+  #Moverelevantfiles
+  moveRelevantFiles(total_indiv, SNP, h, k)
 
 }
