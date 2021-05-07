@@ -1,6 +1,6 @@
 library(data.table)
 library(tidyverse)
-#' Plot distributions 
+#' Plot distributions
 #'
 #' This function plots posterior distribution and prior
 #' @param total_indiv Number of indicviduls in the dataset
@@ -19,29 +19,34 @@ library(tidyverse)
 
 plosteriot <- function(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib=0, Sib_status=0){
   res <- getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib, Sib_status)
-  data.frame(x = c(-3, 3)) %>% ggplot(aes(x)) +
-    geom_vline(xintercept = res$mean, linetype = "longdash", colour = "black", alpha = 1, size =1) +
-    stat_function(fun = dnorm, 
-                  n = 5000, 
-                  position = "identity",
-                  geom = "area",
-                  fill = "blue",
-                  alpha = 0.2,
-                  args = list(mean = 0, 
-                              sd = 1),
-                  size = 0.9, colour = "black") +
-    stat_function(fun = dnorm, 
-                  position = "identity",
-                  geom = "area",
-                  fill = "red",
-                  alpha = 0.2,
-                  n = 5000, 
-                  args = list(mean = res$mean, 
-                              sd = res$sd),
-                  size = 0.9, colour = "black") +
-    theme_bw() +
-    labs(x = 'Genetic liability',
-         y = 'Density',
-         title = 'Case with...') +
-    scale_x_continuous(breaks = seq(-3, 3))
+  if (res != -1){
+    data.frame(x = c(-3, 3)) %>% ggplot(aes(x)) +
+      geom_vline(xintercept = res$mean, linetype = "longdash", colour = "black", alpha = 1, size =1) +
+      stat_function(fun = dnorm,
+                    n = 5000,
+                    position = "identity",
+                    geom = "area",
+                    fill = "blue",
+                    alpha = 0.2,
+                    args = list(mean = 0,
+                                sd = 1),
+                    size = 0.9, colour = "black") +
+      stat_function(fun = dnorm,
+                    position = "identity",
+                    geom = "area",
+                    fill = "red",
+                    alpha = 0.2,
+                    n = 5000,
+                    args = list(mean = res$mean,
+                                sd = res$sd),
+                    size = 0.9, colour = "black") +
+      theme_bw() +
+      labs(x = 'Genetic liability',
+          y = 'Density',
+          title = 'Case with...') +
+      scale_x_continuous(breaks = seq(-3, 3))
+  }
+  else{
+    print("Please choose a different combination of cases, since the one you have entered is not present in data!")
+  }
 }

@@ -4,7 +4,16 @@
 \alias{getMeanSD}
 \title{Get Mean and SD function}
 \usage{
-getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib = 0, Sib_status = 0)
+getMeanSD(
+  total_indiv,
+  SNP,
+  h,
+  Child_i,
+  Mom_i,
+  Dad_i,
+  Nr_sib_i = 0,
+  Sib_status_i = 0
+)
 }
 \arguments{
 \item{total_indiv}{Number of indicviduls in the dataset}
@@ -13,15 +22,15 @@ getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib = 0, Sib_status = 0)
 
 \item{h}{Is the heritability usually 0.5}
 
-\item{Child}{Is a binary for indicating case/notcase for child}
+\item{Child_i}{Is a binary for indicating case/notcase for child}
 
-\item{Mom}{Is a binary for indicating case/notcase for Mom}
+\item{Mom_i}{Is a binary for indicating case/notcase for Mom}
 
-\item{Dad}{Is a binary for indicating case/notcase for Dad}
+\item{Dad_i}{Is a binary for indicating case/notcase for Dad}
 
-\item{Sib_status}{indicates the number of sib-cases}
+\item{Sib_status_i}{indicates the number of sib-cases}
 
-\item{Nr-Sib}{indiacates the number of siblings for the family}
+\item{Nr-Sib_i}{indiacates the number of siblings for the family}
 }
 \description{
 This function grabs the mean and sd from the genetic-liability sampled using the Assign_LTFh fuction
