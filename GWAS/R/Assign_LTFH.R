@@ -97,7 +97,7 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
     SDs[j] <- sd(real_sample[,1])
   }
 
-  Ny_combos <- cbind(Combos,means)%>%
+  Ny_combos <- cbind(Combos,means,SDs)%>%
     as_tibble()
 
   Ny_pheno <- left_join(as_tibble(Pheno_data),Ny_combos,by = c("Child"="Child", "Mom"= "Mom", "Dad" = "Dad", "Nr_sib" = "Nr_sib", "Sib_status" = "Sib_status"))
@@ -109,14 +109,16 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
     distinct(Child, Mom, Dad, Nr_sib, Sib_status) %>%
     rename_with(tolower)%>%
     rowwise() %>%
-    mutate(means = filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$means)
+    mutate(means = filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$means)%>%
+    mutate(SDs = filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$SDs)
 
   result <- left_join(Ny_pheno,Missing,by = c("Child"="child", "Mom"= "mom", "Dad" = "dad", "Nr_sib" = "nr_sib", "Sib_status" = "sib_status")) %>%
     mutate(means = coalesce(means.x, means.y)) %>%
+    mutate(SDs = coalesce(SDs.x, SDs.y)) %>%
     mutate(FID = ID) %>%
     rename(Pheno = means) %>%
     rename(IID = ID) %>%
-    select(FID,IID, Pheno)
+    select(FID,IID, Pheno, SDs)
   #})
   return(result)
 }
