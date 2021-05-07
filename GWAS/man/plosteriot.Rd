@@ -4,7 +4,16 @@
 \alias{plosteriot}
 \title{Plot distributions}
 \usage{
-plosteriot(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib = 0, Sib_status = 0)
+plosteriot(
+  total_indiv,
+  SNP,
+  h,
+  Child = 0,
+  Mom = 0,
+  Dad = 0,
+  Nr_sib = 0,
+  Sib_status = 0
+)
 }
 \arguments{
 \item{total_indiv}{Number of indicviduls in the dataset}
