@@ -150,7 +150,7 @@ SimulerData <- function(total_indiv, indiv_chunk, SNP, h, c, k, nr_workers) {
   plan(future::multisession(workers = x))
   nr_it <- total_indiv %/% indiv_chunk #Integer division
   #Performing the steps in parallel
-  future.apply::future_lapply(2:nr_it, function(n) {
+  tmp<- future.apply::future_lapply(2:nr_it, function(n) {
 
     id_fra <- (indiv_chunk*(n-1))+1
     id_til <- ((n-1)+1)*indiv_chunk
@@ -244,6 +244,6 @@ SimulerData <- function(total_indiv, indiv_chunk, SNP, h, c, k, nr_workers) {
     rm(for_plink,PHENO)
   }, future.seed = T)
 
-  #writeLines(paste("DONE!"))
+  writeLines(paste("DONE!"))
 
 }
