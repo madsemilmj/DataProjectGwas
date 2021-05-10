@@ -15,7 +15,7 @@ moveRelevantFiles <- function(total_indiv, SNP, h, k){
   #Moving BETA
   beta <- fread(paste("./BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""))
   fwrite(as.data.table(beta),
-         paste("./data/BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1",".txt", sep=""),
+         paste("./data/BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""),
          quote = F,
          sep = " ",
          col.names = T)
