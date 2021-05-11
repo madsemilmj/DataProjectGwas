@@ -18,7 +18,7 @@ library(tidyverse)
 
 getMeanSD <- function(total_indiv, SNP, h, Child_i, Mom_i, Dad_i, Nr_sib_i=0, Sib_status_i=0){
   with_sib <- ifelse(Nr_sib_i==0,0,1)
-  file_stringer <- paste("./Dist_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",with_sib,".txt", sep="")
+  file_stringer <- paste("./data/Dist_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",with_sib,".txt", sep="")
   dist_file <- fread(file_stringer)
   df <- dist_file %>%
     filter(Child == Child_i & Mom == Mom_i & Dad == Dad_i & Nr_sib == Nr_sib_i & Sib_status == Sib_status_i)%>%
