@@ -5,7 +5,7 @@
 #' @keywords Standard Error
 #' @export
 #' @examples
-#' sem(x)
+#' sem(rnorm(100))
 
 sem <- function(x){
   sd(x)/sqrt(length(x))

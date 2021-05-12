@@ -15,6 +15,6 @@ CreateTransMatrix(index, covM)
 This function creates a transformation matrix used to calculate conditional distributions
 }
 \examples{
-CreateTransMatrix(1,CovM)
+CreateTransMatrix(1,matrix(ncol = 4, nrow = 4))
 }
 \keyword{transformation}

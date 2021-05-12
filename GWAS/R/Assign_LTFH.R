@@ -1,4 +1,3 @@
-library(tidyverse)
 #' Assign_LTFH function
 #'
 #' This function assigns phenotypes based on LTFH article. This implementation uses Gibs-sampling to efficiently assign genetic liabilities to each individual.
@@ -9,26 +8,26 @@ library(tidyverse)
 #' @param Burn_in Defines the number of samples to discard in the gibs-sampling. Defaults to 100 (found by simulating convergence tests)
 #' @keywords Assign LTFH
 #' @export
+#' @importFrom dplyr %>%
 #' @examples
-#' Assing_LTFH((Pheno_data, valT, h2, with_sib = 1, Burn_in = 100)
+#' Assign_LTFH(Pheno_data = tibble::tibble(ID = 1:100, Child = rbinom(100,1,0.3), Mom = rbinom(100,1,0.3), Dad = rbinom(100,1,0.3), Nr_sib = rep(0,100), Sib_status = rep(0,100)), valT=0.05, h2=0.5, with_sib = 1, Burn_in = 100)
 
 Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
   #profvis::profvis({
-  set.seed(18)
   Pheno_data <- Pheno_data %>%
-    as_tibble()%>%
-    select(ID, Child, Mom, Dad, Nr_sib, Sib_status)
+    tibble::as_tibble()%>%
+    dplyr::select(ID, Child, Mom, Dad, Nr_sib, Sib_status)
   if (with_sib == 0){
     Pheno_data$Nr_sib <- 0
     Pheno_data$Sib_status <- 0
   }
 
   Combos <- Pheno_data %>%
-    as_tibble() %>%
-    distinct(Child, Mom, Dad, Nr_sib, Sib_status)
+    tibble::as_tibble() %>%
+    dplyr::distinct(Child, Mom, Dad, Nr_sib, Sib_status)
 
   sib_status_comb <- Combos %>%
-    distinct(Nr_sib,Sib_status) %>%
+    dplyr::distinct(Nr_sib,Sib_status) %>%
     as.matrix()
 
   Combos <- as.matrix(Combos)
@@ -98,27 +97,25 @@ Assign_LTFH <- function(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100){
   }
 
   Ny_combos <- cbind(Combos,means,SDs)%>%
-    as_tibble()
+    tibble::as_tibble()
 
-  Ny_pheno <- left_join(as_tibble(Pheno_data),Ny_combos,by = c("Child"="Child", "Mom"= "Mom", "Dad" = "Dad", "Nr_sib" = "Nr_sib", "Sib_status" = "Sib_status"))
-
+  Ny_pheno <- dplyr::left_join(tibble::as_tibble(Pheno_data),Ny_combos,by = c("Child"="Child", "Mom"= "Mom", "Dad" = "Dad", "Nr_sib" = "Nr_sib", "Sib_status" = "Sib_status"))
 
   #ADDING THOSE THAT WE DELETED
   Missing <- Ny_pheno %>%
-    filter(is.na(means))%>%
-    distinct(Child, Mom, Dad, Nr_sib, Sib_status) %>%
-    rename_with(tolower)%>%
-    rowwise() %>%
-    mutate(means = filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$means)%>%
-    mutate(SDs = filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$SDs)
-
-  result <- left_join(Ny_pheno,Missing,by = c("Child"="child", "Mom"= "mom", "Dad" = "dad", "Nr_sib" = "nr_sib", "Sib_status" = "sib_status")) %>%
-    mutate(means = coalesce(means.x, means.y)) %>%
-    mutate(SDs = coalesce(SDs.x, SDs.y)) %>%
-    mutate(FID = ID) %>%
-    rename(Pheno = means) %>%
-    rename(IID = ID) %>%
-    select(FID,IID,Child, Mom, Dad, Nr_sib, Sib_status, Pheno, SDs)
+    dplyr::filter(is.na(means))%>%
+    dplyr::distinct(Child, Mom, Dad, Nr_sib, Sib_status) %>%
+    dplyr::rename_with(tolower)%>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(means = dplyr::filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$means)%>%
+    dplyr::mutate(SDs = dplyr::filter(Ny_combos, Child == child & Mom == mom+1 & Dad == dad-1 & Nr_sib == nr_sib & Sib_status == sib_status)$SDs)
+  result <- dplyr::left_join(Ny_pheno,Missing,by = c("Child"="child", "Mom"= "mom", "Dad" = "dad", "Nr_sib" = "nr_sib", "Sib_status" = "sib_status")) %>%
+    dplyr::mutate(means = dplyr::coalesce(means.x, means.y)) %>%
+    dplyr::mutate(SDs = dplyr::coalesce(SDs.x, SDs.y)) %>%
+    dplyr::mutate(FID = ID) %>%
+    dplyr::rename(Pheno = means) %>%
+    dplyr::rename(IID = ID) %>%
+    dplyr::select(FID,IID,Child, Mom, Dad, Nr_sib, Sib_status, Pheno, SDs)
   #})
   return(result)
 }

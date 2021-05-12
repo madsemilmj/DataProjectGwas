@@ -19,7 +19,7 @@ deleteFiles(total_indiv, SNP, h, k)
 This function deletes relevant files
 }
 \examples{
-deleteFiles(total_indiv, SNP, h, k)
+deleteFiles(total_indiv = 100, SNP = 100, h = 0.5, k = 0.05)
 }
 \keyword{Bed}
 \keyword{Make}

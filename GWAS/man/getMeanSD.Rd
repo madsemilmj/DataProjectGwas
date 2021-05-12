@@ -28,14 +28,14 @@ getMeanSD(
 
 \item{Dad_i}{Is a binary for indicating case/notcase for Dad}
 
-\item{Sib_status_i}{indicates the number of sib-cases}
+\item{Nr_sib_i}{indiacates the number of siblings for the family}
 
-\item{Nr-Sib_i}{indiacates the number of siblings for the family}
+\item{Sib_status_i}{indicates the number of sib-cases}
 }
 \description{
 This function grabs the mean and sd from the genetic-liability sampled using the Assign_LTFh fuction
 }
 \examples{
-getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib=0, Sib_status=0)
+getMeanSD(total_indiv = 1000, SNP = 1000, h = 0.5, Child = 1, Mom = 1, Dad = 1, Nr_sib=0, Sib_status=0)
 }
 \keyword{Mean/SD}

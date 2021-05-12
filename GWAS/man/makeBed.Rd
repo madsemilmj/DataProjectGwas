@@ -19,7 +19,7 @@ makeBed(total_indiv, SNP, h, k)
 This function converts the ped-file to the less of size bed file (used by PLINK)
 }
 \examples{
-makeBed(total_indiv, SNP, h, k)
+makeBed(total_indiv = 1000, SNP = 1000, h = 0.5, k = 0.05)
 }
 \keyword{Bed}
 \keyword{Make}

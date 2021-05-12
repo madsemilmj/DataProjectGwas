@@ -19,7 +19,7 @@ moveRelevantFiles(total_indiv, SNP, h, k)
 This function moves relevant files
 }
 \examples{
-moveRelevantFiles(total_indiv, SNP, h, k)
+moveRelevantFiles(total_indiv = 1000, SNP = 1000, h = 0.5, k = 0.05)
 }
 \keyword{Bed}
 \keyword{Make}

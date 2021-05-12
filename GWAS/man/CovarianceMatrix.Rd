@@ -7,15 +7,15 @@
 CovarianceMatrix(h2, nr_sib = 0)
 }
 \arguments{
-\item{nr_sib}{Defines the number of sibling, defaults to 0}
+\item{h2}{is the .. usually 0.5}
 
-\item{h^2}{is the .. usually 0.5}
+\item{nr_sib}{Defines the number of sibling, defaults to 0}
 }
 \description{
 This function calculates the covariance matrix based on h^2 and the number of siblings
 }
 \examples{
-CovarianceMatrix()
+CovarianceMatrix(0.5)
 }
 \keyword{covariance}
 \keyword{matrix}

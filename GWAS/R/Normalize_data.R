@@ -6,7 +6,7 @@
 #' @keywords Normalize
 #' @export
 #' @examples
-#' Normalize_data()
+#' Normalize_data(df = matrix(ncol = 100, nrow = 100), MAF = runif(100,0.01,0.49))
 
 
 Normalize_data <- function(df,MAF){

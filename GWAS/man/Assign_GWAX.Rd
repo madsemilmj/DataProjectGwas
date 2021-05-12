@@ -15,6 +15,6 @@ Assign_GWAX(true, with_sib = 1)
 This function assigns phenotypes based on GWAX.
 }
 \examples{
-Assign_GWAX()
+Assign_GWAX(tibble::tibble(ID = 1:100, Child = rbinom(100,1,0.3), Mom = rbinom(100,1,0.3), Dad = rbinom(100,1,0.3), Nr_sib = rep(0,100), Sib_status = rep(0,100)), with_sib = 1)
 }
 \keyword{gwax}

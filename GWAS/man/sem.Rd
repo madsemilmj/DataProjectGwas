@@ -13,7 +13,7 @@ sem(x)
 This function calculates the standard error of a vector of means
 }
 \examples{
-sem(x)
+sem(rnorm(100))
 }
 \keyword{Error}
 \keyword{Standard}

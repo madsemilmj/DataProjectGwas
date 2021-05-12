@@ -13,7 +13,7 @@ ConditionalDistribution(CovMatrix)
 This function calculates the mean constant and the variance of the normal conditional distributions. Output is a list of the two vector/matrix
 }
 \examples{
-ConditionalDistribution(CovM)
+ConditionalDistribution(matrix(ncol = 4, nrow = 4))
 }
 \keyword{Conditional}
 \keyword{Distributions}

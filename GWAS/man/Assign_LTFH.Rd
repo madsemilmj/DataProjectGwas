@@ -21,7 +21,7 @@ Assign_LTFH(Pheno_data, valT, h2, with_sib = 1, Burn_in = 100)
 This function assigns phenotypes based on LTFH article. This implementation uses Gibs-sampling to efficiently assign genetic liabilities to each individual.
 }
 \examples{
-Assing_LTFH((Pheno_data, valT, h2, with_sib = 1, Burn_in = 100)
+Assign_LTFH(Pheno_data = tibble::tibble(ID = 1:100, Child = rbinom(100,1,0.3), Mom = rbinom(100,1,0.3), Dad = rbinom(100,1,0.3), Nr_sib = rep(0,100), Sib_status = rep(0,100)), valT=0.05, h2=0.5, with_sib = 1, Burn_in = 100)
 }
 \keyword{Assign}
 \keyword{LTFH}

@@ -8,7 +8,7 @@
 #' @keywords Make Bed
 #' @export
 #' @examples
-#' gwasPlink(total_indiv, SNP, h, k)
+#' gwasPlink(total_indiv = 1000, SNP = 1000, h = 0.5, k = 0.05)
 
 
 gwasPlink <- function(total_indiv, SNP, h, k){

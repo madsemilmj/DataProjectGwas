@@ -13,7 +13,7 @@ LinearTransformation(covM)
 This function makes a linear transformation of a CovarianceMatrix.
 }
 \examples{
-LinearTransformation(covM)
+LinearTransformation(matrix(ncol = 4, nrow = 4))
 }
 \keyword{Linaer}
 \keyword{Transformation}

@@ -6,7 +6,7 @@
 #' @keywords transformation
 #' @export
 #' @examples
-#' CreateTransMatrix(1,CovM)
+#' CreateTransMatrix(1,matrix(ncol = 4, nrow = 4))
 
 CreateTransMatrix <- function(index, covM){
   trans <- matrix(0, nrow(covM) , nrow(covM))

@@ -23,6 +23,6 @@ MasterFunc(total_indiv, indiv_chunk, SNP, h, c, k)
 This function Runs the simulation and assigns differet phenotypes (GWAX, LTFH) and generete relevant files used in furhter analysis
 }
 \examples{
-MasterFunc(10000,1000,10000,0.5,100,0.05)
+MasterFunc(1000,100,1000,0.5,100,0.05)
 }
 \keyword{Master}

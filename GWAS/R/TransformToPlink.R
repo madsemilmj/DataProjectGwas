@@ -6,13 +6,13 @@
 #' @keywords PLINK
 #' @export
 #' @examples
-#' TransformToPlink(df, 1000)
+#' TransformToPlink(df = matrix(ncol = 10, nrow = 10), indiv_chunk = 10)
 
 TransformToPlink <- function(df,indiv_chunk){
   a <- matrix(ncol=3,nrow=2) #C er den riskogivne dvs CC = 2 og AA = 0
   a[1,]<-c("A", "C", "C")
   a[2,]<- c("A", "A", "C")
-  
+
   for_plink <- lapply(1:indiv_chunk, function(x){
     tmp <- a[,df[x,]+1]
     c(rep(1,4),rbind(tmp[1,],tmp[2,]))

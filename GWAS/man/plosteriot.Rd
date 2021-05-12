@@ -28,14 +28,14 @@ plosteriot(
 
 \item{Dad}{Is a binary for indicating case/notcase for Dad}
 
-\item{Sib_status}{indicates the number of sib-cases defaults to 0}
+\item{Nr_sib}{indiacates the number of siblings for the family defaults to 0}
 
-\item{Nr-Sib}{indiacates the number of siblings for the family defaults to 0}
+\item{Sib_status}{indicates the number of sib-cases defaults to 0}
 }
 \description{
 This function plots posterior distribution and prior
 }
 \examples{
-plosteriot(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib=0, Sib_status=0)
+plosteriot(total_indiv = 1000, SNP = 1000, h = 0.5, Child=1, Mom=1, Dad=1, Nr_sib=0, Sib_status=0)
 }
 \keyword{DistPlot}

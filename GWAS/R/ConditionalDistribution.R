@@ -5,7 +5,7 @@
 #' @keywords Conditional Distributions
 #' @export
 #' @examples
-#' ConditionalDistribution(CovM)
+#' ConditionalDistribution(matrix(ncol = 4, nrow = 4))
 
 ConditionalDistribution <- function(CovMatrix){
   mu <- matrix(ncol = (nrow(CovMatrix)-1), nrow = nrow(CovMatrix))

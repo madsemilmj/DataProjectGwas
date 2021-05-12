@@ -25,7 +25,7 @@ SimulerData(total_indiv, indiv_chunk, SNP, h, c, k, nr_workers)
 This function simulates genetic-data and saves relevant files doing so.
 }
 \examples{
-SimulerData(10000,1000,10000,0.5,100,0.05,2)
+SimulerData(1000,100,1000,0.5,100,0.05,2)
 }
 \keyword{Genetic}
 \keyword{simulation}

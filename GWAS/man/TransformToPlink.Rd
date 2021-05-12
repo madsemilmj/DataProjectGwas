@@ -15,6 +15,6 @@ TransformToPlink(df, indiv_chunk)
 This function takes a matrix of 0,1,2 (genotypes) and transforms it to data readable to PLINK-software.
 }
 \examples{
-TransformToPlink(df, 1000)
+TransformToPlink(df = matrix(ncol = 10, nrow = 10), indiv_chunk = 10)
 }
 \keyword{PLINK}
