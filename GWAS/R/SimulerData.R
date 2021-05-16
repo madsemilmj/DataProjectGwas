@@ -107,9 +107,10 @@ SimulerData <- function(total_indiv, indiv_chunk, SNP, h, c, k, nr_workers) {
                        quote = F,
                        sep = " ",
                        col.names = T)
+    beta_vals <- cbind(1:SNP,beta)
 
     # Writing effectsizes to file
-    data.table::fwrite(data.table::as.data.table(matrix(beta,ncol = length(beta))),
+    data.table::fwrite(data.table::as.data.table(beta_vals),
                        paste("./BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""),
                        quote = F,
                        sep = " ",
