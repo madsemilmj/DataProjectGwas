@@ -41,7 +41,7 @@ deleteFiles <- function(total_indiv, SNP, h, k){
   files[26] <- paste("./TRUE","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep="")
   for (file in files){
     if (file.exists(file)){
-      file.remove(file)
+      #file.remove(file)
     }
     else {
       print(paste("Could not find file: ", file, sep=""))
