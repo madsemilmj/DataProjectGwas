@@ -21,6 +21,6 @@ linearregressionplotltfh(SNPno, total_indiv, SNP, h, sib)
 This function plots linearregresion plot to illustrate beta
 }
 \examples{
-linearregressionplotltfh(SNPno = 10, total_indiv = 1000, SNP = 1000, h = 0.5, Child=1, Mom=1, Dad=1, Nr_sib=0, Sib_status=0)
+linearregressionplotltfh(SNPno = 10, total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
 }
 \keyword{DistPlot}

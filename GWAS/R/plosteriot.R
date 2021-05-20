@@ -19,7 +19,7 @@
 plosteriot <- function(total_indiv, SNP, h, Child=0, Mom=0, Dad=0, Nr_sib=0, Sib_status=0){
   res <- getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib, Sib_status)
   if (is.list(res)){
-    data.frame(x = c(-3, 3)) %>% ggplot2::ggplot(aes(x)) +
+    data.frame(x = c(-3, 3)) %>% ggplot2::ggplot(ggplot2::aes(x)) +
       ggplot2::geom_vline(xintercept = res$mean, linetype = "longdash", colour = "black", alpha = 1, size =1) +
       ggplot2::stat_function(fun = dnorm,
                     n = 5000,
