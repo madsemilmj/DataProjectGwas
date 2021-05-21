@@ -30,7 +30,7 @@ linearregressionplotltfh <- function(SNPno, total_indiv, SNP, h, sib){
     true_beta <- (true$V2- mean(beta_file$V2))/sd(beta_file$V2)
     est$BETA_norm <- (est$BETA - mean(assoc_fileltfh$BETA))/sd(assoc_fileltfh$BETA)
     x <- c(0,1,2)
-    x_normal<-(x-(2*as.numeric(mf[1, ..SNPno])))/(sqrt(2*as.numeric(mf[1,..SNPno])*(1-as.numeric(mf[1,..SNPno]))))
+    x_normal<-(x-(2*as.numeric(mf[1, SNPno, with=FALSE])))/(sqrt(2*as.numeric(mf[1,SNPno, with=FALSE])*(1-as.numeric(mf[1,SNPno, with=FALSE]))))
     est_beta = x_normal *est$BETA_norm
 
     true_beta <- x_normal*true_beta
