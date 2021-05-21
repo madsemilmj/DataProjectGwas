@@ -12,24 +12,31 @@
 #' @examples
 #' linearregressionplotltfh(SNPno = 10, total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
 
-
 linearregressionplotltfh <- function(SNPno, total_indiv, SNP, h, sib){
-  assoc_file<- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",5,"_",sib,".qassoc", sep="")
+  assoc_file<- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h,"_",5,"_",sib,".qassoc", sep="")
   if (file.exists(assoc_file)) {
+
     assoc_fileltfh <- data.table::fread(assoc_file)
     beta_file <- data.table::fread(paste("./data/BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h,"_",5,".txt", sep=""))
-    #Creating bonferroni adjusted p-values
+    mf <- data.table::fread(paste("./data/MAF","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h,"_",5,".txt", sep=""))
+
     est <- assoc_fileltfh %>%
       dplyr::filter(SNP == SNPno)
 
     true <- beta_file %>%
       dplyr::filter(V1 == SNPno)
 
-    true_beta <- true$V2
 
-    df <- tibble::tibble(x = c(0,1), est_beta = 0:1 * est$BETA, sd = est$SE, true_beta = 0:1*true_beta)
+    true_beta <- (true$V2- mean(beta_file$V2))/sd(beta_file$V2)
+    est$BETA_norm <- (est$BETA - mean(assoc_fileltfh$BETA))/sd(assoc_fileltfh$BETA)
+    x <- c(0,1,2)
+    x_normal<-(x-(2*as.numeric(mf[1, ..SNPno])))/(sqrt(2*as.numeric(mf[1,..SNPno])*(1-as.numeric(mf[1,..SNPno]))))
+    est_beta = x_normal *est$BETA_norm
+
+    true_beta <- x_normal*true_beta
+    df <- tibble::tibble(x = x_normal, est_beta=est_beta, sd= (est$SE- mean(assoc_fileltfh$SE))/sd(assoc_fileltfh$SE), true_beta=true_beta )
     colors <- c("SE-band" = "red", "Est. Beta" = "steelblue", "True Beta" = "black")
-    h <- ggplot2::ggplot(df, ggplot2::aes(x=x)) +
+    h <- ggplot2::ggplot(df, aes(x=x_normal)) +
       ggplot2::geom_line(aes(y=est_beta, color = "Est. Beta"))+
       ggplot2::geom_line(aes(y=true_beta, color = "True Beta"))+
       ggplot2::geom_line(aes(y=est_beta-sd, color="SE-band"), linetype="twodash")+
@@ -39,7 +46,7 @@ linearregressionplotltfh <- function(SNPno, total_indiv, SNP, h, sib){
       ggplot2::theme_light()
     return(h)
   } else {
-      print("No data exists! - Try another predefined or run our simulation")
-    }
+    print("No data exists! - Try another predefined or run our simulation")
+  }
 
 }
