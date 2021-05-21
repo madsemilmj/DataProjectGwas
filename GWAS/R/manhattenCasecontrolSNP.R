@@ -15,34 +15,38 @@
 manhattancasectrlSNP <- function(SNPno, total_indiv, SNP, h, sib){
   stringer <- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.assoc", sep="")
   if (file.exists(stringer)) {
-    assoc_file <- data.table::fread(stringer)
-    assoc_file$is_annotate <- replicate(nrow(assoc_file),0)
-    assoc_file$is_annotate[SNPno] <- 1
-    don <- assoc_file %>% 
-      dplyr::filter(-log10(P)>1 | SNP == SNPno) # to make plot lighter
-    
-    plot3 <- ggplot2::ggplot(don, ggplot2::aes(x=SNP, y=-log10(P))) +
-      
+    assoc_file <- fread(stringer)
+    assoc_file$is_annotate <- ifelse(assoc_file$SNP==SNPno,1,0)
+    don <- assoc_file %>%
+      dplyr::filter(-log10(P)>1 | is_annotate == 1) # to make plot lighter
+
+    plot1 <- ggplot2::ggplot(don, ggplot2::aes(x=SNP, y=-log10(P))) +
+
       # Show all points
       ggplot2::geom_point(color="darkgrey", alpha=0.8, size=1) +
-      ggplot2::geom_point(data=subset(don, SNP==SNPno), color="cornflower blue", size=2.5) +
-      
+      ggplot2::geom_point(data=subset(don, is_annotate==1), color="red", size=2.5) +
+
       #geom_point(data=subset(don, -log10(P)>thr), color="orange", size=2.5) +
-      ggrepel::geom_label_repel(data=subset(don, is_annotate==1), ggplot2::aes(label=SNP), 
-                                size=4, box.padding = 0.1, point.padding =1,
-                                arrow = arrow(length = unit(0.02, "npc")),ylim=5.5) +
-      
+      ggrepel::geom_label_repel(data=subset(don, is_annotate==1), ggplot2::aes(label=SNP),
+                                fontface = 'bold',
+                                box.padding = 10,
+                                point.padding = 0.75,
+                                nudge_x = .15,
+                                nudge_y = .5,
+                                segment.linetype = 1,
+                                arrow = arrow(length = unit(0.015, "npc"))
+      ) +
+
       # Custom the theme:
       ggplot2::theme_light() +
-      
-      ggplot2::theme( 
+
+      ggplot2::theme(
         legend.position="none",
         panel.border = element_blank(),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank()
       )
-    return(plot3)
-    
+    return(plot1)
   } else {
     print("No data exists! - Try another predefined or run our simulation")
   }
