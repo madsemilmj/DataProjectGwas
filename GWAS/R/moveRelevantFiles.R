@@ -95,6 +95,7 @@ moveRelevantFiles <- function(total_indiv, SNP, h, k){
                          quote = F,
                          sep = " ",
                          col.names = T)
+      #Moving
     } else {print("file not exists!")}
   }else {
     print("Simulation failed - please create a folder named 'data' in your working directory")
