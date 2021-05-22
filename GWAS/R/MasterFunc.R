@@ -36,7 +36,7 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
       dplyr::rename("IID" = "ID", "Pheno" = "LG_child")
 
     data.table::fwrite(data.table::as.data.table(true_gen),
-                       paste("./Pheno_TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1",".txt", sep=""),
+                       paste("./Pheno_TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""),
                        quote = F,
                        sep = " ",
                        col.names = T)
