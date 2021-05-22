@@ -21,7 +21,8 @@ Imports:
 	future.apply,
 	ggrepel,
 	cowplot,
-	latex2exp
+	latex2exp,
+	plotly
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
