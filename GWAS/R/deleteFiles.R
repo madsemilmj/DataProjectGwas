@@ -39,6 +39,9 @@ deleteFiles <- function(total_indiv, SNP, h, k){
   files[24] <- paste("./Pheno_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0.txt", sep="")
   files[25] <- paste("./Pheno_LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.txt", sep="")
   files[26] <- paste("./TRUE","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep="")
+  files[27] <- paste("./TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".log", sep="")
+  files[28] <- paste("./TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".qassoc", sep="")
+  files[29] <- paste("./Pheno_TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep="")
   for (file in files){
     if (file.exists(file)){
       file.remove(file)

@@ -95,7 +95,14 @@ moveRelevantFiles <- function(total_indiv, SNP, h, k){
                          quote = F,
                          sep = " ",
                          col.names = T)
-      #Moving
+      #Moving TG-assoc
+      TG <- data.table::fread(paste("./TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".qassoc", sep=""))
+      data.table::fwrite(data.table::as.data.table(TG),
+                         paste("./data/TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".qassoc", sep=""),
+                         quote = F,
+                         sep = " ",
+                         col.names = T)
+
     } else {print("file not exists!")}
   }else {
     print("Simulation failed - please create a folder named 'data' in your working directory")
