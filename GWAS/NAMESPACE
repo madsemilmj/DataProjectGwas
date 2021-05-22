@@ -2,6 +2,7 @@
 
 export(Assign_GWAX)
 export(Assign_LTFH)
+export(CompareBox)
 export(ConditionalDistribution)
 export(CovarianceMatrix)
 export(CreateTransMatrix)

@@ -19,7 +19,8 @@ Imports:
 	tibble,
 	tidyr,
 	future.apply,
-	ggrepel
+	ggrepel,
+	cowplot
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
