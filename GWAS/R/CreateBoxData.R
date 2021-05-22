@@ -43,8 +43,8 @@ CreateBoxData <- function(sib){
       dplyr::rename("CHISQ_gwax" = "CHISQ") %>%
       dplyr::left_join(dplyr::select(cc,SNP,CHISQ), by = c("SNP" = "SNP")) %>%
       dplyr::rename("CHISQ_cc" = "CHISQ")
-    
-    #joining to get nulls  
+
+    #joining to get nulls
     nulls <- true_beta %>%
       dplyr::filter(V2 == 0) %>%
       dplyr::left_join(dplyr::select(ltfh,SNP,CHISQ), by = c("V1" = "SNP")) %>%
@@ -53,14 +53,14 @@ CreateBoxData <- function(sib){
       dplyr::rename("CHISQ_gwax" = "CHISQ") %>%
       dplyr::left_join(dplyr::select(cc,SNP,CHISQ), by = c("SNP" = "SNP")) %>%
       dplyr::rename("CHISQ_cc" = "CHISQ")
-    
+
     df <- tibble::tibble(MeanNull = mean(nulls$CHISQ_ltfh), MeanCausal = mean(causals$CHISQ_ltfh), Power = ltfhPower, Method = "LT-FH") %>%
       dplyr::add_row(MeanNull = mean(nulls$CHISQ_gwax), MeanCausal = mean(causals$CHISQ_gwax), Power = gwaxPower, Method = "GWAX") %>%
       dplyr::add_row(MeanNull = mean(nulls$CHISQ_cc), MeanCausal = mean(causals$CHISQ_cc), Power = ccPower, Method = "CaseControl")
-    
+
     #Looping through rest of files (if they exsist) and add them
     for (i in 1:9){
-      file <- paste("./data/NineSims/",i,"/data/LTFH_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="") 
+      file <- paste("./data/NineSims/",i,"/data/LTFH_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
       if (file.exists(file)){
         # Stringers for the current assoc-files
         ltfh_string <- paste("./data/NineSims/",i,"/data/LTFH_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
@@ -92,8 +92,8 @@ CreateBoxData <- function(sib){
           dplyr::rename("CHISQ_gwax" = "CHISQ") %>%
           dplyr::left_join(dplyr::select(cc,SNP,CHISQ), by = c("SNP" = "SNP")) %>%
           dplyr::rename("CHISQ_cc" = "CHISQ")
-        
-        #joining to get nulls  
+
+        #joining to get nulls
         nulls <- true_beta %>%
           dplyr::filter(V2 == 0) %>%
           dplyr::left_join(dplyr::select(ltfh,SNP,CHISQ), by = c("V1" = "SNP")) %>%
@@ -102,23 +102,23 @@ CreateBoxData <- function(sib){
           dplyr::rename("CHISQ_gwax" = "CHISQ") %>%
           dplyr::left_join(dplyr::select(cc,SNP,CHISQ), by = c("SNP" = "SNP")) %>%
           dplyr::rename("CHISQ_cc" = "CHISQ")
-        df <- df %>% 
+        df <- df %>%
           dplyr::add_row(MeanNull = mean(nulls$CHISQ_ltfh), MeanCausal = mean(causals$CHISQ_ltfh), Power = ltfhPower, Method = "LT-FH") %>%
           dplyr::add_row(MeanNull = mean(nulls$CHISQ_gwax), MeanCausal = mean(causals$CHISQ_gwax), Power = gwaxPower, Method = "GWAX") %>%
           dplyr::add_row(MeanNull = mean(nulls$CHISQ_cc), MeanCausal = mean(causals$CHISQ_cc), Power = ccPower, Method = "CaseControl")
-        
-        
-      }else {print("no file")} 
+
+
+      }else {print("no file")}
     }
-    
-    fwrite(data.table::as.data.table(df),
+
+    data.table::fwrite(data.table::as.data.table(df),
            paste("./data/BoxData","_",sib,".txt", sep=""),
            quote = F,
            sep = " ",
            col.names = T)
-    
+
   } else {
     print("No data exists! - Try another predefined or run our simulation")
   }
-  
+
 }
