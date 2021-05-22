@@ -13,6 +13,6 @@ CompareBox(sib)
 This function plots 3 boxplots to compare the 3 methods
 }
 \examples{
-comparebox(sib = 1)
+CompareBox(sib = 1)
 }
 \keyword{Boxplots}
