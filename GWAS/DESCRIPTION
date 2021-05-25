@@ -10,7 +10,7 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Imports:
-	dplyr,
+	dplyr (>= 1.0.0),
 	data.table,
 	stringr,
 	flock,
