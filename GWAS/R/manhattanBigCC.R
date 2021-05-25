@@ -4,13 +4,13 @@
 #' @param total_indiv Number of indicviduls in the dataset
 #' @param SNP Is the number of SNPs in the data
 #' @param h Is the heritability usually 0.5
-#' @param sib Is a binary for indicating if we look at sibling history
+#' @param BFC Is a binary variable indicating if we look at Bon-ferroni-corrected p-values.
 #' @keywords Manhattan
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
-#' manhattanBigCC(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
-manhattanBigCC <- function(total_indiv, SNP, h){
+#' manhattanBigCC(total_indiv = 1000, SNP = 1000, h = 0.5, BFC = 1)
+manhattanBigCC <- function(total_indiv, SNP, h, BFC = 1){
   file <- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.ASSOC", sep="")
   if (file.exists(file)){
     # Read files
@@ -21,8 +21,9 @@ manhattanBigCC <- function(total_indiv, SNP, h){
     causal1$C <- ifelse(causal1$V2 != 0, "yes", "no")
     assoc_file <- dplyr::left_join(assoc_file,dplyr::select(causal1,V1,C), by = c("SNP" = "V1"))
 
+    devider <- ifelse(BFC == 1,1000000,1)
     # Threshold
-    thr = -log10(.05/1000000)
+    thr = -log10(.05/devider)
 
     don <- assoc_file %>%
       # Filter SNP to make the plot lighter
