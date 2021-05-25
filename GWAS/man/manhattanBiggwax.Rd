@@ -4,7 +4,7 @@
 \alias{manhattanBiggwax}
 \title{Manhattan Big Plot GWAX}
 \usage{
-manhattanBiggwax(total_indiv, SNP, h, sib = 0)
+manhattanBiggwax(total_indiv, SNP, h, sib = 0, BFC = 1)
 }
 \arguments{
 \item{total_indiv}{Number of indicviduls in the dataset}
@@ -14,11 +14,13 @@ manhattanBiggwax(total_indiv, SNP, h, sib = 0)
 \item{h}{Is the heritability usually 0.5}
 
 \item{sib}{Is a binary for indicating if we look at sibling history}
+
+\item{BFC}{Is a binary variable indicating if we look at Bon-ferroni-corrected p-values.}
 }
 \description{
 This function plots a manhatten plot with tooltip
 }
 \examples{
-manhattanBiggwax(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
+manhattanBiggwax(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0, BFC = 1)
 }
 \keyword{Manhattan}

@@ -5,12 +5,13 @@
 #' @param SNP Is the number of SNPs in the data
 #' @param h Is the heritability usually 0.5
 #' @param sib Is a binary for indicating if we look at sibling history
+#' @param BFC Is a binary variable indicating if we look at Bon-ferroni-corrected p-values.
 #' @keywords Manhattan
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
-#' manhattanBiggwax(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
-manhattanBiggwax <- function(total_indiv, SNP, h, sib=0){
+#' manhattanBiggwax(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0, BFC = 1)
+manhattanBiggwax <- function(total_indiv, SNP, h, sib=0, BFC = 1){
   file <- paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".ASSOC", sep="")
   if (file.exists(file)){
     # Read files
@@ -20,32 +21,33 @@ manhattanBiggwax <- function(total_indiv, SNP, h, sib=0){
     causal1 <- data.table::fread(causal_string)
     causal1$C <- ifelse(causal1$V2 != 0, "yes", "no")
     assoc_file <- dplyr::left_join(assoc_file,dplyr::select(causal1,V1,C), by = c("SNP" = "V1"))
-    
+
+    devider <- ifelse(BFC == 1,1000000,1)
     # Threshold
-    thr = -log10(.05/1000000)
-    
+    thr = -log10(.05/devider)
+
     don <- assoc_file %>%
       # Filter SNP to make the plot lighter
       dplyr::filter(-log10(P)>1)
-    
+
     # Prepare text description for each SNP:
     don$text <- paste("SNP: ", don$SNP, "\nLOD score:", -log10(don$P) %>% round(2), "\nCausal SNP:", don$C ,sep="")
-    
+
     # Make the plot
     p <- ggplot2::ggplot(don, ggplot2::aes(x=SNP, y=-log10(P), text=text)) +
       # Show all points
       ggplot2::geom_point(ggplot2::aes(color=ifelse(C == "yes" & -log10(P)<=thr, 'black', 'darkgrey')), alpha=0.8, size=1.3) +
       ggplot2::scale_color_manual(values = c("black" = "black", "darkgrey" = "darkgrey")) +
-      
+
       # Add causal points that are also significant
       ggplot2::geom_point(data=subset(don, C != 'no' & -log10(P)>thr), color="blue", size=1.6) +
-      
+
       # Add evt. points that are found significant but not causal (false-positive)
       ggplot2::geom_point(data=subset(don, C == 'no' & -log10(P)>thr), color="red", size=1.6)+
-      
+
       # Custom the theme:
       ggplot2::theme_light() +
-      
+
       ggplot2::theme(
         legend.position="none",
         panel.border = ggplot2::element_blank(),
