@@ -26,10 +26,10 @@ moveRelevantFiles <- function(total_indiv, SNP, h, k){
                          quote = F,
                          sep = " ",
                          col.names = T)
-      #Moving case_control.assoc
-      case_control <- data.table::fread(paste("./case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".assoc", sep=""))
+      #Moving case_control.qassoc
+      case_control <- data.table::fread(paste("./case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".qassoc", sep=""))
       data.table::fwrite(data.table::as.data.table(case_control),
-                         paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".assoc", sep=""),
+                         paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".qassoc", sep=""),
                          quote = F,
                          sep = " ",
                          col.names = T)
@@ -50,17 +50,17 @@ moveRelevantFiles <- function(total_indiv, SNP, h, k){
                          col.names = T)
 
       #Moving GWAX_0.assoc
-      GWAX_0_assoc <- data.table::fread(paste("./GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0.assoc", sep=""))
+      GWAX_0_assoc <- data.table::fread(paste("./GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0.qassoc", sep=""))
       data.table::fwrite(data.table::as.data.table(GWAX_0_assoc),
-                         paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0.assoc", sep=""),
+                         paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0.qassoc", sep=""),
                          quote = F,
                          sep = " ",
                          col.names = T)
 
       #Moving GWAX_1.assoc
-      GWAX_1_assoc <- data.table::fread(paste("./GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.assoc", sep=""))
+      GWAX_1_assoc <- data.table::fread(paste("./GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.qassoc", sep=""))
       data.table::fwrite(data.table::as.data.table(GWAX_1_assoc),
-                         paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.assoc", sep=""),
+                         paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1.qassoc", sep=""),
                          quote = F,
                          sep = " ",
                          col.names = T)
