@@ -82,6 +82,7 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
 
     #Making a pheno_file for GWAX with sib
     gwax_pheno_1 <- Assign_GWAX(true = ny_true)
+    gwax_pheno_1$Pheno <- ifelse(gwax_pheno_1$Pheno == 1, 3, 2)
     data.table::fwrite(data.table::as.data.table(gwax_pheno_1),
                        paste("./Pheno_GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_1",".txt", sep=""),
                        quote = F,
@@ -90,11 +91,23 @@ MasterFunc <- function(total_indiv, indiv_chunk, SNP, h, c, k){
 
     #Making a pheno_file for GWAX with out sib
     gwax_pheno_0 <- Assign_GWAX(true = ny_true, with_sib = 0)
+    gwax_pheno_0$Pheno <- ifelse(gwax_pheno_0$Pheno == 1, 3, 2)
     data.table::fwrite(data.table::as.data.table(gwax_pheno_0),
                        paste("./Pheno_GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,"_0",".txt", sep=""),
                        quote = F,
                        sep = " ",
                        col.names = T)
+
+    #Rewriting phone-file for Case_Control
+    cc_pheno <- data.table::fread(paste("./Pheno","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""))
+    cc_pheno$Pheno <- ifelse(cc_pheno$Pheno == 1, 3, 2)
+    data.table::fwrite(data.table::as.data.table(cc_pheno),
+                       paste("./Pheno","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_",k*100,".txt", sep=""),
+                       quote = F,
+                       sep = " ",
+                       col.names = T)
+
+
     #Makebed function
     makeBed(total_indiv, SNP, h, k)
 
