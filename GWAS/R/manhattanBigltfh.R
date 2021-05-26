@@ -12,10 +12,10 @@
 #' @examples
 #' manhattanBigCC(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0, BFC = 1)
 manhattanBigltfh <- function(total_indiv, SNP, h, sib=0, BFC = 1){
-  file <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".QASSOC", sep="")
+  file <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
   if (file.exists(file)){
     # Read files
-    assoc_string <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".QASSOC", sep="")
+    assoc_string <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
     assoc_file <- data.table::fread(assoc_string)
     causal_string <- paste("./data/BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.txt", sep="")
     causal1 <- data.table::fread(causal_string)

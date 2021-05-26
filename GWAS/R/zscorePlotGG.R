@@ -11,12 +11,12 @@
 #' @examples
 #' zscorePlotGG(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
 zscorePlotGG <- function(total_indiv, SNP, h, sib){
-  file <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".QASSOC", sep="")
+  file <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
   if (file.exists(file)){
     #Read relevant assoc-files
-    file_stringer_LTFH <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".QASSOC", sep="")
-    file_stringer_GWAX<- paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".ASSOC", sep="")
-    file_stringer_case_ctrl<- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.ASSOC", sep="")
+    file_stringer_LTFH <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
+    file_stringer_GWAX<- paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".assoc", sep="")
+    file_stringer_case_ctrl<- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.assoc", sep="")
     ltfh <- data.table::fread(file_stringer_LTFH)
     gwax <- data.table::fread(file_stringer_GWAX)
     case_ctrl <- data.table::fread(file_stringer_case_ctrl)
@@ -37,71 +37,71 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib){
       dplyr::rename("Z_gwax" = "Z") %>%
       dplyr::left_join(select(case_ctrl,c(SNP,Z)), by = c("V1" = "SNP")) %>%
       dplyr::rename("Z_case_ctrl" = "Z")
-    
-    
+
+
     #PLOT OF LTFH VS GWAX
     Lm <- lm(Z_ltfh ~ 0 + Z_gwax, data = zscoredata)
     LmSum <- summary(Lm)
     p1 <- ggplot2::ggplot(data = zscoredata, ggplot2::aes(Z_ltfh, Z_gwax)) +
       ggplot2::geom_point(color="darkgrey") +
       ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
-      
+
       ggplot2::ggtitle(paste("Z-Scores for LT-FH vs. GWAX")) +
       ggplot2::geom_text(x = 0, y = 9, label = paste("Slope = ",round(LmSum$coefficients[1],3),sep=""), color = 'black') +
-      
+
       ggplot2::labs(x=expression(paste(Z[GWAX])),y=expression(paste(Z[LT-FH]))) +
-      
+
       ggplot2::theme_light() +
-      
-      ggplot2::theme( 
+
+      ggplot2::theme(
         legend.position="none",
         panel.border = ggplot2::element_blank(),
         panel.grid.major.x = ggplot2::element_blank(),
         panel.grid.minor.x = ggplot2::element_blank()
       )
-    
+
     # PLOT OF THE LTFH VS CASE-CTRL
     Lm <- lm(Z_ltfh ~ 0 + Z_case_ctrl, data = zscoredata)
     LmSum <- summary(Lm)
     p2 <- ggplot2::ggplot(data = zscoredata, ggplot2::aes(Z_case_ctrl, Z_ltfh)) +
       ggplot2::geom_point(color="darkgrey") +
       ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
-      
+
       ggplot2::ggtitle(paste("Z-Scores for LT-FH vs CASE-CTRL")) +
       ggplot2::geom_text(x = 0, y = 9, label = paste("Slope = ",round(LmSum$coefficients[1],3),sep=""), color = 'black') +
-      
+
       ggplot2::labs(x=expression(paste(Z[CASE_CTRL])),y=expression(paste(Z[LT-FH]))) +
-      
+
       ggplot2::theme_light() +
-      
-      ggplot2::theme( 
+
+      ggplot2::theme(
         legend.position="none",
         panel.border = ggplot2::element_blank(),
         panel.grid.major.x = ggplot2::element_blank(),
         panel.grid.minor.x = ggplot2::element_blank()
       )
-    
+
     # PLOT OF THE GWAX VS CASE-CTRL
     Lm <- lm(Z_gwax ~ 0 + Z_case_ctrl, data = zscoredata)
     LmSum <- summary(Lm)
     p3 <- ggplot2::ggplot(data = zscoredata, ggplot2::aes(Z_case_ctrl, Z_gwax)) +
       ggplot2::geom_point(color="darkgrey") +
       ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
-      
+
       ggplot2::ggtitle(paste("Z-Scores for GWAX vs CASE-CTRL")) +
       ggplot2::geom_text(x = 0, y = 9, label = paste("Slope = ",round(LmSum$coefficients[1],3),sep=""), color = 'black') +
-      
+
       ggplot2::labs(x=expression(paste(Z[CASE_CTRL])),y=expression(paste(Z[GWAX]))) +
-      
+
       ggplot2::theme_light() +
-      
-      ggplot2::theme( 
+
+      ggplot2::theme(
         legend.position="none",
         panel.border = ggplot2::element_blank(),
         panel.grid.major.x = ggplot2::element_blank(),
         panel.grid.minor.x = ggplot2::element_blank()
       )
-    
+
     return(plot_grid(p2,p1,p3,nrow=1))
   } else {
     print("No data exists! - Try another predefined or run our simulation")
