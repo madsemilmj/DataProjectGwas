@@ -4,7 +4,7 @@
 \alias{zscorePlotGG}
 \title{Zscore plot}
 \usage{
-zscorePlotGG(total_indiv, SNP, h, sib)
+zscorePlotGG(total_indiv, SNP, h, sib, includeTG)
 }
 \arguments{
 \item{total_indiv}{Number of indicviduls in the dataset}
@@ -14,11 +14,13 @@ zscorePlotGG(total_indiv, SNP, h, sib)
 \item{h}{Is the heritability usually 0.5}
 
 \item{sib}{Is a binary for indicating if we look at sibling history}
+
+\item{IncludeTG}{Is a binary for indicating if we include True genetic liability}
 }
 \description{
 This function plots and compares z-scores for each of the methods
 }
 \examples{
-zscorePlotGG(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
+zscorePlotGG(total_indiv = 1000, SNP = 1000, h = 0.5, sib=0, includeTG = 0)
 }
 \keyword{ZscorePlot}

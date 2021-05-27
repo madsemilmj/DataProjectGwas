@@ -9,7 +9,7 @@
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
-#' manhattanBigCC(total_indiv = 1000, SNP = 1000, h = 0.5, BFC = 1)
+#' manhattanBigTG(total_indiv = 1000, SNP = 1000, h = 0.5, BFC = 1)
 manhattanBigTG <- function(total_indiv, SNP, h, BFC = 1){
   file <- paste("./data/TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.qassoc", sep="")
   if (file.exists(file)){
