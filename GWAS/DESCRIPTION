@@ -22,7 +22,9 @@ Imports:
 	ggrepel,
 	cowplot,
 	latex2exp,
-	plotly
+	plotly,
+	caret,
+	e1071
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

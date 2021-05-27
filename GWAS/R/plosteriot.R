@@ -15,34 +15,33 @@
 #' @examples
 #' plosteriot(total_indiv = 1000, SNP = 1000, h = 0.5, Child=1, Mom=1, Dad=1, Nr_sib=0, Sib_status=0)
 
-
 plosteriot <- function(total_indiv, SNP, h, Child=0, Mom=0, Dad=0, Nr_sib=0, Sib_status=0){
   res <- getMeanSD(total_indiv, SNP, h, Child, Mom, Dad, Nr_sib, Sib_status)
   if (is.list(res)){
     data.frame(x = c(-3, 3)) %>% ggplot2::ggplot(ggplot2::aes(x)) +
       ggplot2::geom_vline(xintercept = res$mean, linetype = "longdash", colour = "black", alpha = 1, size =1) +
       ggplot2::stat_function(fun = dnorm,
-                    n = 5000,
-                    position = "identity",
-                    geom = "area",
-                    fill = "blue",
-                    alpha = 0.2,
-                    args = list(mean = 0,
-                                sd = 1),
-                    size = 0.9, colour = "black") +
+                             n = 5000,
+                             position = "identity",
+                             geom = "area",
+                             fill = "blue",
+                             alpha = 0.2,
+                             args = list(mean = 0,
+                                         sd = h),
+                             size = 0.9, colour = "black") +
       ggplot2::stat_function(fun = dnorm,
-                    position = "identity",
-                    geom = "area",
-                    fill = "red",
-                    alpha = 0.2,
-                    n = 5000,
-                    args = list(mean = res$mean,
-                                sd = res$sd),
-                    size = 0.9, colour = "black") +
+                             position = "identity",
+                             geom = "area",
+                             fill = "red",
+                             alpha = 0.2,
+                             n = 5000,
+                             args = list(mean = res$mean,
+                                         sd = res$sd),
+                             size = 0.9, colour = "black") +
       ggplot2::theme_bw() +
       ggplot2::labs(x = 'Genetic liability',
-          y = 'Density',
-          title = 'Case with...') +
+                    y = 'Density',
+                    title = paste("Input of ",format(total_indiv,scientific = F)," individuals and ",format(SNP,scientific = F)," SNPs with ",h*100," heritability", sep="")) +
       ggplot2::scale_x_continuous(breaks = seq(-3, 3))
   }
   else if (res == -1){
