@@ -11,7 +11,7 @@
 #' @importFrom dplyr %>%
 #' @examples
 #' ConfusionMatrixLtfh(total_indiv = 1000, SNP = 1000, h = 0.5, sib =1, BFC = 1)
-ConfusionMatrixGwax <- function(total_indiv, SNP, h, sib, BFC){
+ConfusionMatrixLtfh <- function(total_indiv, SNP, h, sib, BFC){
   thr = -log10(.05/BFC)
   #Fetching relevant data
   assoc_string <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
