@@ -22,7 +22,7 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
     ltfh <- data.table::fread(file_stringer_LTFH)
     gwax <- data.table::fread(file_stringer_GWAX)
     case_ctrl <- data.table::fread(file_stringer_case_ctrl)
-    TG <- data.table::fread(TG)
+    TG <- data.table::fread(file_stringer_TG)
     #creating z-scores
     ltfh$Z <- sign(ltfh$BETA)*abs(qnorm(ltfh$P,lower.tail = FALSE))
     case_ctrl$Z <- sign(case_ctrl$BETA)*abs(qnorm(case_ctrl$P,lower.tail = FALSE))
