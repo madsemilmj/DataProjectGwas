@@ -6,8 +6,8 @@
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
-#' CompareBox(sib = 1)
-CompareBox <- function(sib){
+#' CompareBox(sib = 1, includeTG = 0)
+CompareBox <- function(sib, includeTG){
   total_indiv <- 100000
   SNP <- 100000
   h <- 0.5
@@ -15,6 +15,10 @@ CompareBox <- function(sib){
   file <- paste("./data/BoxData","_",sib,".txt", sep="")
   if (file.exists(file)){
     df <- data.table::fread(file)
+    if (includeTG == 0){
+      df <- df %>%
+        dplyr::filter(Method != "TrueGeneticLiab")
+    }
     NullPlot <- ggplot2::ggplot(df, ggplot2::aes(x=Method, y=MeanNull))+
       ggplot2::geom_boxplot()+
       ggplot2::labs(title = latex2exp::TeX('Average null $\\chi^2$'))+
@@ -22,7 +26,7 @@ CompareBox <- function(sib){
       ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                      axis.title.y = ggplot2::element_blank(),
                      plot.title = ggplot2::element_text(hjust = 0.5))
-    
+
     CausalPlot <- ggplot2::ggplot(df, ggplot2::aes(x=Method, y=MeanCausal))+
       ggplot2::geom_boxplot()+
       ggplot2::labs(title = latex2exp::TeX('Average causal $\\chi^2$'))+
@@ -30,7 +34,7 @@ CompareBox <- function(sib){
       ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                      axis.title.y = ggplot2::element_blank(),
                      plot.title = ggplot2::element_text(hjust = 0.5))
-    
+
     PowerPlot <- ggplot2::ggplot(df, ggplot2::aes(x=Method, y=Power))+
       ggplot2::geom_boxplot()+
       ggplot2::labs(title = "Power")+
@@ -42,7 +46,7 @@ CompareBox <- function(sib){
   } else {
     print("No data exists! - Try another predefined or run our simulation")
   }
-  
+
 }
 
 
