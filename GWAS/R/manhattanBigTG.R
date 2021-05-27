@@ -21,9 +21,8 @@ manhattanBigltfh <- function(total_indiv, SNP, h, BFC = 1){
     causal1$C <- ifelse(causal1$V2 != 0, "yes", "no")
     assoc_file <- dplyr::left_join(assoc_file,dplyr::select(causal1,V1,C), by = c("SNP" = "V1"))
 
-    devider <- ifelse(BFC == 1,1000000,1)
     # Threshold
-    thr = -log10(.05/devider)
+    thr = -log10(.05/BFC)
 
     don <- assoc_file %>%
       # Filter SNP to make the plot lighter

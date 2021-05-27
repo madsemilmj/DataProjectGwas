@@ -12,14 +12,11 @@
 #' @examples
 #' linearregressionplotcc(SNPno = 10, total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
 linearregressionplotcc <- function(SNPno, total_indiv, SNP, h, sib){
-  assoc_file<- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h,"_",5,".assoc", sep="")
+  assoc_file<- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h,"_",5,".qassoc", sep="")
   if (file.exists(assoc_file)) {
     assoc_fileCC <- data.table::fread(assoc_file)
     beta_file <- data.table::fread(paste("./data/BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h,"_",5,".txt", sep=""))
     mf <- data.table::fread(paste("./data/MAF","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h,"_",5,".txt", sep=""))
-    assoc_fileCC$BETA <- log(assoc_fileCC$OR)
-    assoc_fileCC$z <-  sign(assoc_fileCC$OR - 1)* sqrt(assoc_fileCC$CHISQ)
-    assoc_fileCC$SE <- assoc_fileCC$BETA/assoc_fileCC$z
 
     est <- assoc_fileCC %>%
       dplyr::filter(SNP == SNPno)

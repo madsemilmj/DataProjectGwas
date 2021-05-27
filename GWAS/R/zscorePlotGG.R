@@ -15,15 +15,15 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib){
   if (file.exists(file)){
     #Read relevant assoc-files
     file_stringer_LTFH <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
-    file_stringer_GWAX<- paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".assoc", sep="")
-    file_stringer_case_ctrl<- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.assoc", sep="")
+    file_stringer_GWAX<- paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
+    file_stringer_case_ctrl<- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.qassoc", sep="")
     ltfh <- data.table::fread(file_stringer_LTFH)
     gwax <- data.table::fread(file_stringer_GWAX)
     case_ctrl <- data.table::fread(file_stringer_case_ctrl)
     #creating z-scores
-    gwax$Z <- sign(gwax$OR-1)*sqrt(gwax$CHISQ)
-    case_ctrl$Z <- sign(case_ctrl$OR-1)*sqrt(case_ctrl$CHISQ)
     ltfh$Z <- sign(ltfh$BETA)*abs(qnorm(ltfh$P,lower.tail = FALSE))
+    case_ctrl$Z <- sign(case_ctrl$BETA)*abs(qnorm(case_ctrl$P,lower.tail = FALSE))
+    gwax$Z <- sign(gwax$BETA)*abs(qnorm(gwax$P,lower.tail = FALSE))
     # get true causals
     file_stringer_true <- paste("./data/BETA","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.txt", sep="")
     true_beta <- data.table::fread(file_stringer_true)

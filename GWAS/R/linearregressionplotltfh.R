@@ -37,10 +37,10 @@ linearregressionplotltfh <- function(SNPno, total_indiv, SNP, h, sib){
     df <- tibble::tibble(x = x_normal, est_beta=est_beta, sd= (est$SE- mean(assoc_fileltfh$SE))/sd(assoc_fileltfh$SE), true_beta=true_beta )
     colors <- c("SE-band" = "red", "Est. Beta" = "steelblue", "True Beta" = "black")
     h <- ggplot2::ggplot(df, aes(x=x_normal)) +
-      ggplot2::geom_line(aes(y=est_beta, color = "Est. Beta"))+
-      ggplot2::geom_line(aes(y=true_beta, color = "True Beta"))+
-      ggplot2::geom_line(aes(y=est_beta-sd, color="SE-band"), linetype="twodash")+
-      ggplot2::geom_line(aes(y=est_beta+sd, color="SE-band"), linetype="twodash")+
+      ggplot2::geom_line(ggplot2::aes(y=est_beta, color = "Est. Beta"))+
+      ggplot2::geom_line(ggplot2::aes(y=true_beta, color = "True Beta"))+
+      ggplot2::geom_line(ggplot2::aes(y=est_beta-sd, color="SE-band"), linetype="twodash")+
+      ggplot2::geom_line(ggplot2::aes(y=est_beta+sd, color="SE-band"), linetype="twodash")+
       ggplot2::labs(x = paste("SNP number: ",SNPno,sep=""), y = "Pheno",color="Legend") +
       ggplot2::scale_color_manual(values = colors) +
       ggplot2::theme_light()

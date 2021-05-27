@@ -13,7 +13,7 @@
 #' manhattancasectrlSNP(SNPno = 10, total_indiv = 1000, SNP = 1000, h = 0.5, sib=0)
 
 manhattancasectrlSNP <- function(SNPno, total_indiv, SNP, h, sib){
-  stringer <- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.assoc", sep="")
+  stringer <- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.qassoc", sep="")
   if (file.exists(stringer)) {
     assoc_file <- fread(stringer)
     assoc_file$is_annotate <- ifelse(assoc_file$SNP==SNPno,1,0)
