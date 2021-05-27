@@ -15,17 +15,19 @@ CreateBoxData <- function(sib){
   if (file.exists(file)){
     # Stringers for the first assoc-files
     first_ltfh <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
-    first_cc <- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.assoc", sep="")
-    first_gwax <- paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".assoc", sep="")
+    first_cc <- paste("./data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.qassoc", sep="")
+    first_gwax <- paste("./data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
     first_TG <- paste("./data/TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.qassoc", sep="")
-    #Reading assoc files
+    #Reading qassoc files
     ltfh <- data.table::fread(first_ltfh)
     gwax <- data.table::fread(first_gwax)
     cc <- data.table::fread(first_cc)
     TG <- data.table::fread(first_TG)
-    #adding chisq to ltfhand TG
+    #adding chisq data
     ltfh$CHISQ <- qchisq(ltfh$P,df=1,lower.tail = FALSE)
     TG$CHISQ <- qchisq(TG$P,df=1,lower.tail = FALSE)
+    cc$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
+    gwax$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
     #Check for found causals
     ltfh$causal <- ifelse(ltfh$P < (0.05)/1000000,1,0)
     gwax$causal <- ifelse(gwax$P < (0.05)/1000000,1,0)
@@ -75,17 +77,20 @@ CreateBoxData <- function(sib){
       if (file.exists(file)){
         # Stringers for the current assoc-files
         ltfh_string <- paste("./data/NineSims/",i,"/data/LTFH_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
-        cc_string <- paste("./data/NineSims/",i,"/data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.assoc", sep="")
-        gwax_string <- paste("./data/NineSims/",i,"/data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".assoc", sep="")
+        cc_string <- paste("./data/NineSims/",i,"/data/case_ctrl","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.qassoc", sep="")
+        gwax_string <- paste("./data/NineSims/",i,"/data/GWAX","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
         TG_string <- paste("./data/NineSims/",i,"/data/TG","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5.qassoc", sep="")
         #Reading assoc files
         ltfh <- data.table::fread(ltfh_string)
         gwax <- data.table::fread(gwax_string)
         cc <- data.table::fread(cc_string)
         TG <- data.table::fread(TG_string)
-        #adding chisq to ltfh and TG
+        #adding chisq data
         ltfh$CHISQ <- qchisq(ltfh$P,df=1,lower.tail = FALSE)
         TG$CHISQ <- qchisq(TG$P,df=1,lower.tail = FALSE)
+        cc$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
+        gwax$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
+
         #Check for found causals
         ltfh$causal <- ifelse(ltfh$P < (0.05)/1000000,1,0)
         gwax$causal <- ifelse(gwax$P < (0.05)/1000000,1,0)
