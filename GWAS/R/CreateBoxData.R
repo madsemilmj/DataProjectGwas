@@ -27,7 +27,7 @@ CreateBoxData <- function(sib){
     ltfh$CHISQ <- qchisq(ltfh$P,df=1,lower.tail = FALSE)
     TG$CHISQ <- qchisq(TG$P,df=1,lower.tail = FALSE)
     cc$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
-    gwax$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
+    gwax$CHISQ <- qchisq(gwax$P,df=1,lower.tail = FALSE)
     #Check for found causals
     ltfh$causal <- ifelse(ltfh$P < (0.05)/1000000,1,0)
     gwax$causal <- ifelse(gwax$P < (0.05)/1000000,1,0)
@@ -89,7 +89,7 @@ CreateBoxData <- function(sib){
         ltfh$CHISQ <- qchisq(ltfh$P,df=1,lower.tail = FALSE)
         TG$CHISQ <- qchisq(TG$P,df=1,lower.tail = FALSE)
         cc$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
-        gwax$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
+        gwax$CHISQ <- qchisq(gwax$P,df=1,lower.tail = FALSE)
 
         #Check for found causals
         ltfh$causal <- ifelse(ltfh$P < (0.05)/1000000,1,0)
