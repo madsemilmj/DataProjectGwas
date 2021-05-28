@@ -11,7 +11,6 @@ CreateBoxData <- function(sib){
   total_indiv <- 100000
   SNP <- 100000
   h <- 0.5
-  sib <- 0
   file <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
   if (file.exists(file)){
     # Stringers for the first assoc-files
