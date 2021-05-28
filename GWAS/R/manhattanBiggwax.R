@@ -39,7 +39,7 @@ manhattanBiggwax <- function(total_indiv, SNP, h, sib=0, BFC = 1){
       ggplot2::scale_color_manual(values = c("black" = "black", "darkgrey" = "darkgrey")) +
 
       # Add causal points that are also significant
-      ggplot2::geom_point(data=subset(don, C != 'no' & -log10(P)>thr), color="blue", size=1.6) +
+      ggplot2::geom_point(data=subset(don, C != 'no' & -log10(P)>thr), color="cornflowerblue", size=1.6) +
 
       # Add evt. points that are found significant but not causal (false-positive)
       ggplot2::geom_point(data=subset(don, C == 'no' & -log10(P)>thr), color="red", size=1.6)+

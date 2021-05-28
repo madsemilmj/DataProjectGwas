@@ -11,6 +11,7 @@ CreateBoxData <- function(sib){
   total_indiv <- 100000
   SNP <- 100000
   h <- 0.5
+  sib <- 0
   file <- paste("./data/LTFH","_",format(total_indiv,scientific = F),"_",format(SNP,scientific = F),"_",h*100,"_5_",sib,".qassoc", sep="")
   if (file.exists(file)){
     # Stringers for the first assoc-files
@@ -28,6 +29,8 @@ CreateBoxData <- function(sib){
     TG$CHISQ <- qchisq(TG$P,df=1,lower.tail = FALSE)
     cc$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
     gwax$CHISQ <- qchisq(gwax$P,df=1,lower.tail = FALSE)
+    #Checking for inf in qchisq
+    TG$CHISQ <- ifelse(TG$CHISQ == Inf, 1000, TG$CHISQ)
     #Check for found causals
     ltfh$causal <- ifelse(ltfh$P < (0.05)/1000000,1,0)
     gwax$causal <- ifelse(gwax$P < (0.05)/1000000,1,0)
@@ -90,7 +93,8 @@ CreateBoxData <- function(sib){
         TG$CHISQ <- qchisq(TG$P,df=1,lower.tail = FALSE)
         cc$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
         gwax$CHISQ <- qchisq(gwax$P,df=1,lower.tail = FALSE)
-
+        #Checking for inf in qchisq
+        TG$CHISQ <- ifelse(TG$CHISQ == Inf, 1000, TG$CHISQ)
         #Check for found causals
         ltfh$causal <- ifelse(ltfh$P < (0.05)/1000000,1,0)
         gwax$causal <- ifelse(gwax$P < (0.05)/1000000,1,0)
