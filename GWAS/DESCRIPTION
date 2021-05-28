@@ -24,7 +24,8 @@ Imports:
 	latex2exp,
 	plotly,
 	caret,
-	e1071
+	e1071,
+	grDevices
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

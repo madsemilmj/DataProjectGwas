@@ -57,14 +57,20 @@ ConfusionMatrixLtfh <- function(total_indiv, SNP, h, sib, BFC){
     plotTable <- table %>%
       dplyr::mutate(Label = ifelse(table$Test == table$True, "Correct", "Not_correct")) %>%
       dplyr::group_by(True)
+    plotTable$Label <- c("Correct_notcausal","Incorrect_notcausal","Incorrect_causal","Correct_causal")
 
     #Plot
     p <- ggplot2::ggplot(data = plotTable, mapping = ggplot2::aes(x = True, y = Test, fill = Label)) +
       ggplot2::geom_tile() +
-      ggplot2::geom_text(ggplot2::aes(label = Freq), vjust = .5, fontface  = "bold", alpha = 1, size = 14) +
-      ggplot2::scale_fill_manual(values = c(Correct = "green", Not_correct = "red")) +
+      ggplot2::geom_text(ggplot2::aes(label = Freq), vjust = .5, fontface  = "bold", alpha = 1,size = 14) +
+      ggplot2::scale_fill_manual(values = c(Correct_causal = "cornflowerblue",
+                                            Incorrect_causal = grDevices::adjustcolor("red",alpha.f = 0.5),
+                                            Incorrect_notcausal=grDevices::adjustcolor("darkorange1",alpha.f = 0.8),
+                                            Correct_notcausal="darkgrey"),labels=c("Correct causal", "Correct not-causal", "Incorrect causal","Incorrect not-causal")) +
+      ggplot2::theme(legend.title = ggplot2::element_blank()) +
       ggplot2::theme_light() +
-      ggplot2::xlim(rev(levels(table$True)))
+      ggplot2::xlim(rev(levels(table$True))) +
+      ggplot2::theme(legend.title = ggplot2::element_blank())
     return(p)
 
 
