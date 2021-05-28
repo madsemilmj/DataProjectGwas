@@ -4,7 +4,7 @@
 \alias{CompareBox}
 \title{Boxplot for comparisons}
 \usage{
-CompareBox(sib)
+CompareBox(sib, includeTG)
 }
 \arguments{
 \item{sib}{Binary indicator to indicate if we want to look at siblings}
@@ -13,6 +13,6 @@ CompareBox(sib)
 This function plots 3 boxplots to compare the 3 methods
 }
 \examples{
-CompareBox(sib = 1)
+CompareBox(sib = 1, includeTG = 0)
 }
 \keyword{Boxplots}
