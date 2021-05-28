@@ -34,8 +34,8 @@ manhattanBigTG <- function(total_indiv, SNP, h, BFC = 1){
     # Make the plot
     p <- ggplot2::ggplot(don, ggplot2::aes(x=SNP, y=-log10(P), text=text)) +
       # Show all points
-      ggplot2::geom_point(ggplot2::aes(color=ifelse(C == "yes" & -log10(P)<=thr, 'black', 'darkgrey')), alpha=0.8, size=1.3) +
-      ggplot2::scale_color_manual(values = c("black" = "black", "darkgrey" = "darkgrey")) +
+      ggplot2::geom_point(ggplot2::aes(color=ifelse(C == "yes" & -log10(P)<=thr, 'darkorange1', 'darkgrey')), alpha=0.8, size=1.3) +
+      ggplot2::scale_color_manual(values = c("darkorange1" = "darkorange1", "darkgrey" = "darkgrey")) +
 
       # Add causal points that are also significant
       ggplot2::geom_point(data=subset(don, C != 'no' & -log10(P)>thr), color="cornflowerblue", size=1.6) +

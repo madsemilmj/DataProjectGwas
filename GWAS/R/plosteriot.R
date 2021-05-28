@@ -27,7 +27,7 @@ plosteriot <- function(total_indiv, SNP, h, Child=0, Mom=0, Dad=0, Nr_sib=0, Sib
                              fill = "blue",
                              alpha = 0.2,
                              args = list(mean = 0,
-                                         sd = h),
+                                         sd = sqrt(h)),
                              size = 0.9, colour = "black") +
       ggplot2::stat_function(fun = dnorm,
                              position = "identity",
