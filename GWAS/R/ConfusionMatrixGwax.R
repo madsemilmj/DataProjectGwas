@@ -64,8 +64,8 @@ ConfusionMatrixGwax <- function(total_indiv, SNP, h, sib, BFC){
       ggplot2::geom_tile() +
       ggplot2::geom_text(ggplot2::aes(label = Freq), vjust = .5, fontface  = "bold", alpha = 1,size = 14) +
       ggplot2::scale_fill_manual(values = c(Correct_causal = "cornflowerblue",
-                                            Incorrect_causal = grDevices::adjustcolor("red",alpha.f = 0.5),
-                                            Incorrect_notcausal=grDevices::adjustcolor("darkorange1",alpha.f = 0.8),
+                                            Incorrect_causal = grDevices::adjustcolor("darkorange1",alpha.f = 0.8),
+                                            Incorrect_notcausal=grDevices::adjustcolor("red",alpha.f = 0.5),
                                             Correct_notcausal="darkgrey"),labels=c("Correct causal", "Correct not-causal", "Incorrect causal","Incorrect not-causal")) +
       ggplot2::theme(legend.title = ggplot2::element_blank()) +
       ggplot2::theme_light() +

@@ -41,7 +41,7 @@ plosteriot <- function(total_indiv, SNP, h, Child=0, Mom=0, Dad=0, Nr_sib=0, Sib
       ggplot2::theme_bw() +
       ggplot2::labs(x = 'Genetic liability',
                     y = 'Density',
-                    title = paste("Input of ",format(total_indiv,scientific = F)," individuals and ",format(SNP,scientific = F)," SNPs with ",h*100," heritability", sep="")) +
+                    title = paste("Input of ",format(total_indiv,scientific = F)," individuals and ",format(SNP,scientific = F)," SNPs with ",h," heritability", sep="")) +
       ggplot2::scale_x_continuous(breaks = seq(-3, 3))
   }
   else if (res == -1){
