@@ -44,8 +44,8 @@ linearregressionplotltfh <- function(SNPno, total_indiv, SNP, h, sib){
     h <- ggplot2::ggplot(df, aes(x=x_normal)) +
       ggplot2::geom_line(ggplot2::aes(y=est_beta, color = "Est. Beta"))+
       ggplot2::geom_line(ggplot2::aes(y=true_beta, color = "True Beta"))+
-      ggplot2::geom_line(ggplot2::aes(y=est_beta-sd, color="SE-band"), linetype="twodash")+
-      ggplot2::geom_line(ggplot2::aes(y=est_beta+sd, color="SE-band"), linetype="twodash")+
+      ggplot2::geom_line(ggplot2::aes(y=lowerband, color="SE-band"), linetype="twodash")+
+      ggplot2::geom_line(ggplot2::aes(y=upperband, color="SE-band"), linetype="twodash")+
       ggplot2::labs(x = paste("SNP number: ",SNPno,sep=""), y = "Pheno",color="Legend") +
       ggplot2::scale_color_manual(values = colors) +
       ggplot2::theme_light()
