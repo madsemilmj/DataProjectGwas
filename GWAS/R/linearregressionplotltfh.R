@@ -34,7 +34,12 @@ linearregressionplotltfh <- function(SNPno, total_indiv, SNP, h, sib){
     est_beta = x_normal *est$BETA_norm
 
     true_beta <- x_normal*true_beta
-    df <- tibble::tibble(x = x_normal, est_beta=est_beta, sd= (est$SE- mean(assoc_fileltfh$SE))/sd(assoc_fileltfh$SE), true_beta=true_beta )
+
+    upperband <- (est$BETA_norm + (est$SE- mean(assoc_fileltfh$SE, na.rm = T))/sd(assoc_fileltfh$SE, na.rm = T))*x_normal
+    lowerband <- (est$BETA_norm - (est$SE- mean(assoc_fileltfh$SE, na.rm = T))/sd(assoc_fileltfh$SE, na.rm = T))*x_normal
+
+
+    df <- tibble::tibble(x = x_normal, est_beta=est_beta, lowerband= lowerband, upperband = upperband, true_beta=true_beta )
     colors <- c("SE-band" = "red", "Est. Beta" = "steelblue", "True Beta" = "black")
     h <- ggplot2::ggplot(df, aes(x=x_normal)) +
       ggplot2::geom_line(ggplot2::aes(y=est_beta, color = "Est. Beta"))+
