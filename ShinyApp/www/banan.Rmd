@@ -1,0 +1,340 @@
+---
+title: "Convergence Test Gibbs Sampling"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(GWAS)
+library(latex2exp)
+library(here)
+```
+## How and why do we use Gibbs Sampling
+Gibbs sampling is a sampling algorithm designed to draw samples from posterior distributions (however it can be used to draw samples from any distribution like in our case the multivariate normal) when sampling from those distributions are not straight-forward. When we know the conditional distribution of each of the parameters from the target distribution (posterior distribution), and hence it is possible to draw samples from them - we use the Gibbs sampling algorithm (compared to for instance other more general algorithms like Metropolis Hastings).
+
+The algorithm reduces the difficult problem of sampling from a multivariate distribution down to a sequence of simpler univariate problems.Therefore in order to use the Gibbs Sampling algorithm we need to know (and be able to draw samples from) the full conditional distributions for each parameter. 
+
+In our case, the target distribution is:
+
+$$
+\left(\begin{matrix}
+\epsilon_{o,g} \\
+\epsilon_{o} \\
+\epsilon_{p_1} \\
+\epsilon_{p_2} \\
+\epsilon_s
+\end{matrix}\right) \sim MVN_5(A\boldsymbol{\mu}, A\Sigma A^T)
+$$
+
+Where
+
+$$
+\Sigma = \left(\begin{matrix}
+1-h^2 & 0 & 0 & 0 & 0 \\
+0 & h^2 & \frac{h^2}{2} & \frac{h^2}{2} & \frac{h^2}{2} \\
+0 & \frac{h^2}{2} & 1 & 0 & \frac{h^2}{2} \\
+0 & \frac{h^2}{2} & 0 & 1 & \frac{h^2}{2} \\
+0 & \frac{h^2}{2} & \frac{h^2}{2} & \frac{h^2}{2} & 1 \\
+\end{matrix}\right) \quad \wedge \quad \boldsymbol{\mu} = \left(\begin{matrix}
+0 \\
+0 \\
+0 \\
+0 \\
+0
+\end{matrix}\right)
+$$
+
+and $A$ is the solution to:
+
+$$
+A\left(\begin{matrix}
+\epsilon_{o,e} \\
+\epsilon_{o,g} \\
+\epsilon_{p_1} \\
+\epsilon_{p_2} \\
+\epsilon_s
+\end{matrix}\right) = \left(\begin{matrix}
+\epsilon_{o,g} \\
+\epsilon_{o} \\
+\epsilon_{p_1} \\
+\epsilon_{p_2} \\
+\epsilon_s
+\end{matrix}\right)
+$$
+where $\epsilon_o = \epsilon_{o,e}+\epsilon_{o,g}$ and $\epsilon$ defines liabilities.
+
+In this case we know the univariate distribution of the full conditional distribution for each parameter, which will be normal distributions and can be calculated using:
+
+
+```{r conditional distribution formula, fig.align = 'center', out.width = "60%", fig.cap = "Source: Wikipedia", echo=FALSE}
+knitr::include_graphics(here::here("C:/Users/Bruger/OneDrive - Aarhus Universitet/dataprojekt_shiny_app/ConDist.PNG"))
+```
+
+Once we are able to draw samples from the conditional distributions, the general Gibbs Sampling algorithm is:
+
+```{r gibs algo, fig.align = 'center', out.width = "60%", fig.cap = "Source: Bayesian Statistical Methods, Reich and Ghosh", echo=FALSE}
+knitr::include_graphics(here::here("C:/Users/Bruger/OneDrive - Aarhus Universitet/dataprojekt_shiny_app/GibsAlgo.PNG"))
+```
+
+
+WRITE ABOUT THE TRUNCATED PART HERE 
+
+WRITE ABOUT HOW WE SAMPLE FROM TRUNCATE USING UNIFORM HERE: https://www.r-bloggers.com/2020/08/generating-data-from-a-truncated-distribution/
+
+Here is our implementation of the Gibbs Sampling algorithm. In the below code, we do not specify any specific upper and lower bound, which is used to draw samples from the truncated version of the multivariate normal. In the subsequent sections we will explore different configurations resulting in different truncated multivariate normal distributions.
+
+```{r Gibbs}
+set.seed(18)
+
+h2 <- 0.5
+nr_sib <- 1
+valT <- 0.05 #prevalence (used to define bounds/case - threshold)
+
+CovMatrix <- GWAS::LinearTransformation(GWAS::CovarianceMatrix(h2,nr_sib))
+#Below is where we change the bounds depeding on the configuration
+LowerBound <- rep(-Inf,nrow(CovMatrix)-1)
+UpperBound <- rep(Inf,nrow(CovMatrix)-1)
+
+CondInfo <- GWAS::ConditionalDistribution(CovMatrix)
+sigma <- CondInfo$sigma
+mu <- CondInfo$mu
+# Total number of samples
+S <- 6000
+my_sample <- matrix(ncol = (length(LowerBound)+1), nrow = S)
+#Below is the initial values
+vals <- rep(10,(length(LowerBound)+1))
+#Running the gibbs-sampling
+for (i in 1:S){
+  #Child gen
+  vals[1] <- rnorm(1,mu[1,] %*% vals[2:length(vals)], sqrt(sigma[1]))
+  #REST
+  for (p in 2:(length(LowerBound)+1)){
+    mu_prod <- mu[p,] %*% vals[-p]
+    l1 <- pnorm(LowerBound[p-1], mu_prod, sqrt(sigma[p]))
+    u1 <- pnorm(UpperBound[p-1], mu_prod, sqrt(sigma[p]))
+    g1 <- runif(1,l1,u1)
+    vals[p] <- qnorm(g1,mu_prod, sqrt(sigma[p]))
+  }
+  my_sample[i,] <- vals
+}
+```
+
+
+We will now look at different configurations as well as different initial values and explore the behaviour/convergence of our samples.
+
+### All family-members is a case with start values at $10$
+
+```{r Gibbs_conf1, echo=FALSE}
+set.seed(18)
+
+h2 <- 0.5
+nr_sib <- 1
+
+CovMatrix <- GWAS::LinearTransformation(GWAS::CovarianceMatrix(h2,nr_sib))
+#Below is where we change the bounds depeding on the configuration
+LowerBound <- rep(qnorm(1-valT),nrow(CovMatrix)-1)
+UpperBound <- rep(Inf,nrow(CovMatrix)-1)
+
+CondInfo <- GWAS::ConditionalDistribution(CovMatrix)
+sigma <- CondInfo$sigma
+mu <- CondInfo$mu
+# Total number of samples
+S <- 6000
+my_sample <- matrix(ncol = (length(LowerBound)+1), nrow = S)
+#Below is the initial values
+vals <- rep(10,(length(LowerBound)+1))
+#Running the gibbs-sampling
+for (i in 1:S){
+  #Child gen
+  vals[1] <- rnorm(1,mu[1,] %*% vals[2:length(vals)], sqrt(sigma[1]))
+  #REST
+  for (p in 2:(length(LowerBound)+1)){
+    mu_prod <- mu[p,] %*% vals[-p]
+    l1 <- pnorm(LowerBound[p-1], mu_prod, sqrt(sigma[p]))
+    u1 <- pnorm(UpperBound[p-1], mu_prod, sqrt(sigma[p]))
+    g1 <- runif(1,l1,u1)
+    vals[p] <- qnorm(g1,mu_prod, sqrt(sigma[p]))
+  }
+  my_sample[i,] <- vals
+}
+
+```
+
+```{r plot0, echo=FALSE, fig.width=10, fig.height=16}
+par(mfrow=c(5,2), mar=c(6,4,6,4))
+#1
+plot(my_sample[,1], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{o,g}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{o,g}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,1],my_sample[,2], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{o,g}$ vs. $\\epsilon_{o}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{o,g}$'), ylab = latex2exp::TeX('$\\epsilon_{o}$'),
+     xlim = c(-5,5), ylim = c(-5,5))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+
+#2
+plot(my_sample[,2], type = "l",main=latex2exp::TeX('Trace plot for $\\epsilon_{o}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{o}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,2],my_sample[,3], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{o}$ vs. $\\epsilon_{p_1}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{o}$'), ylab = latex2exp::TeX('$\\epsilon_{p_1}$'),
+     xlim = c(-5,5), ylim = c(-5,5))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+abline(v=qnorm(1-valT), col = "red", lw = 2)
+
+#3
+plot(my_sample[,3], type = "l",main=latex2exp::TeX('Trace plot for $\\epsilon_{p_1}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{p_1}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,3],my_sample[,4], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{p_1}$ vs. $\\epsilon_{p_2}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{p_1}$'), ylab = latex2exp::TeX('$\\epsilon_{p_2}$'),
+     xlim = c(-5,5), ylim = c(-5,5))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+abline(v=qnorm(1-valT), col = "red", lw = 2)
+
+#4
+plot(my_sample[,4], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{p_2}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{p_2}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,4],my_sample[,5], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{p_2}$ vs. $\\epsilon_{s}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{p_2}$'), ylab = latex2exp::TeX('$\\epsilon_{s}$'),
+     xlim = c(-5,5), ylim = c(-5,5))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+abline(v=qnorm(1-valT), col = "red", lw = 2)
+
+
+
+#5
+plot(my_sample[,5], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{s}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{s}$'))
+abline(v = 100, col = "red", lw = 2)
+
+```
+
+
+
+
+
+
+
+
+
+```{r plot1, include=FALSE, fig.width=10, fig.height=16}
+par(mfrow=c(5,2), mar=c(6,4,6,4))
+#1
+plot(my_sample[,1], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{o,g}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{o,g}$'))
+abline(v = 100, col = "red", lw = 2)
+acf(my_sample[,1], main = latex2exp::TeX('ACF for $\\epsilon_{o,g}$'))
+#2
+plot(my_sample[,2], type = "l",main=latex2exp::TeX('Trace plot for $\\epsilon_{o}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{o}$'))
+abline(v = 100, col = "red", lw = 2)
+acf(my_sample[,2], main = latex2exp::TeX('ACF for $\\epsilon_{o}$'))
+#3
+plot(my_sample[,3], type = "l",main=latex2exp::TeX('Trace plot for $\\epsilon_{p_1}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{p_1}$'))
+abline(v = 100, col = "red", lw = 2)
+acf(my_sample[,3], main = latex2exp::TeX('ACF for $\\epsilon_{p_1}$'))
+#4
+plot(my_sample[,4], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{p_2}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{p_2}$'))
+abline(v = 100, col = "red", lw = 2)
+acf(my_sample[,4], main = latex2exp::TeX('ACF for $\\epsilon_{p_2}$'))
+#5
+plot(my_sample[,5], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{s}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{s}$'))
+abline(v = 100, col = "red", lw = 2)
+acf(my_sample[,5], main = latex2exp::TeX('ACF for $\\epsilon_{s}$'))
+
+```
+
+### No family-members is a case with start values at $10$
+
+```{r Gibbs_conf2, echo=FALSE}
+set.seed(18)
+
+h2 <- 0.5
+nr_sib <- 1
+
+CovMatrix <- GWAS::LinearTransformation(GWAS::CovarianceMatrix(h2,nr_sib))
+#Below is where we change the bounds depeding on the configuration
+LowerBound <- rep(-Inf,nrow(CovMatrix)-1)
+UpperBound <- rep(qnorm(1-valT),nrow(CovMatrix)-1)
+
+CondInfo <- GWAS::ConditionalDistribution(CovMatrix)
+sigma <- CondInfo$sigma
+mu <- CondInfo$mu
+# Total number of samples
+S <- 6000
+my_sample <- matrix(ncol = (length(LowerBound)+1), nrow = S)
+#Below is the initial values
+vals <- rep(10,(length(LowerBound)+1))
+#Running the gibbs-sampling
+for (i in 1:S){
+  #Child gen
+  vals[1] <- rnorm(1,mu[1,] %*% vals[2:length(vals)], sqrt(sigma[1]))
+  #REST
+  for (p in 2:(length(LowerBound)+1)){
+    mu_prod <- mu[p,] %*% vals[-p]
+    l1 <- pnorm(LowerBound[p-1], mu_prod, sqrt(sigma[p]))
+    u1 <- pnorm(UpperBound[p-1], mu_prod, sqrt(sigma[p]))
+    g1 <- runif(1,l1,u1)
+    vals[p] <- qnorm(g1,mu_prod, sqrt(sigma[p]))
+  }
+  my_sample[i,] <- vals
+}
+```
+
+
+
+```{r plot2, echo=FALSE, fig.width=10, fig.height=16}
+pdf(file = "plotem.pdf",   # The directory you want to save the file in
+    width = 10, # The width of the plot in inches
+    height = 16)
+
+par(mfrow=c(5,2), mar=c(6,4,6,4))
+#1
+plot(my_sample[,1], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{o,g}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{o,g}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,1],my_sample[,2], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{o,g}$ vs. $\\epsilon_{o}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{o,g}$'), ylab = latex2exp::TeX('$\\epsilon_{o}$'))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+
+#2
+plot(my_sample[,2], type = "l",main=latex2exp::TeX('Trace plot for $\\epsilon_{o}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{o}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,2],my_sample[,3], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{o}$ vs. $\\epsilon_{p_1}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{o}$'), ylab = latex2exp::TeX('$\\epsilon_{p_1}$'))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+abline(v=qnorm(1-valT), col = "red", lw = 2)
+
+#3
+plot(my_sample[,3], type = "l",main=latex2exp::TeX('Trace plot for $\\epsilon_{p_1}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{p_1}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,3],my_sample[,4], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{p_1}$ vs. $\\epsilon_{p_2}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{p_1}$'), ylab = latex2exp::TeX('$\\epsilon_{p_2}$'))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+abline(v=qnorm(1-valT), col = "red", lw = 2)
+
+#4
+plot(my_sample[,4], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{p_2}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{p_2}$'))
+abline(v = 100, col = "red", lw = 2)
+plot(my_sample[,4],my_sample[,5], main=latex2exp::TeX('Scatter-plot for $\\epsilon_{p_2}$ vs. $\\epsilon_{s}$'),
+     xlab = latex2exp::TeX('$\\epsilon_{p_2}$'), ylab = latex2exp::TeX('$\\epsilon_{s}$'))
+abline(h=qnorm(1-valT), col = "red", lw = 2)
+abline(v=qnorm(1-valT), col = "red", lw = 2)
+
+
+
+#5
+plot(my_sample[,5], type = "l", main=latex2exp::TeX('Trace plot for $\\epsilon_{s}$'),
+     xlab = "iteration", ylab = latex2exp::TeX('$\\epsilon_{s}$'))
+abline(v = 100, col = "red", lw = 2)
+dev.off()
+```
+
