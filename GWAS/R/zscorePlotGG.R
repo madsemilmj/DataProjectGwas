@@ -55,7 +55,7 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
       ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
 
       ggplot2::ggtitle(paste("Z-Scores for LT-FH vs. GWAX")) +
-      ggplot2::geom_text(x = 0, y = 9, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
+      ggplot2::geom_text(x = 0, y = 3, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
 
       ggplot2::labs(x=expression(paste(Z[GWAX])),y=expression(paste(Z[LT-FH]))) +
 
@@ -76,7 +76,7 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
       ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
 
       ggplot2::ggtitle(paste("Z-Scores for LT-FH vs CASE-CTRL")) +
-      ggplot2::geom_text(x = 0, y = 9, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
+      ggplot2::geom_text(x = 0, y = 3, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
 
       ggplot2::labs(x=expression(paste(Z[CASE_CTRL])),y=expression(paste(Z[LT-FH]))) +
 
@@ -97,7 +97,7 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
       ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
 
       ggplot2::ggtitle(paste("Z-Scores for GWAX vs CASE-CTRL")) +
-      ggplot2::geom_text(x = 0, y = 9, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
+      ggplot2::geom_text(x = 0, y = 3, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
 
       ggplot2::labs(x=expression(paste(Z[CASE_CTRL])),y=expression(paste(Z[GWAX]))) +
 
@@ -120,7 +120,7 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
         ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
 
         ggplot2::ggtitle(paste("Z-Scores for True Genetic Liability vs. LT-FH")) +
-        ggplot2::geom_text(x = 0, y = 9, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
+        ggplot2::geom_text(x = 0, y = 3, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
 
         ggplot2::labs(x=expression(paste(Z[LT-FH])),y=expression(paste(Z[True]))) +
 
@@ -141,7 +141,7 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
         ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
 
         ggplot2::ggtitle(paste("Z-Scores for True Genetic Liability vs GWAX")) +
-        ggplot2::geom_text(x = 0, y = 9, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
+        ggplot2::geom_text(x = 0, y = 3, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
 
         ggplot2::labs(x=expression(paste(Z[GWAX])),y=expression(paste(Z[True]))) +
 
@@ -162,7 +162,7 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
         ggplot2::geom_smooth(method = "lm", formula = y~0+x, col = "red") +
 
         ggplot2::ggtitle(paste("Z-Scores for True Genetic Liability vs CASE-CTRL")) +
-        ggplot2::geom_text(x = 0, y = 9, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
+        ggplot2::geom_text(x = 0, y = 3, label = paste("Squared slope = ",round(LmSum$coefficients[1]^2,3),sep=""), color = 'black') +
 
         ggplot2::labs(x=expression(paste(Z[CASE_CTRL])),y=expression(paste(Z[True]))) +
 
