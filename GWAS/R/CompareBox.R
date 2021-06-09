@@ -15,7 +15,7 @@ CompareBox <- function(sib, includeTG){
   if (file.exists(file)){
     df <- data.table::fread(file)
     df <- df %>%
-      dplyr::filter(Method == "LT-FH" & MeanCausal<38 | Method == "CaseControl" & MeanCausal<38 | Method == "GWAX" & MeanCausal<38 | Method == "TrueGeneticLiab" )
+      dplyr::filter(Method == "LT-FH" & MeanCausal<38 | Method == "CaseControl" & MeanCausal<38 | Method == "GWAX" & MeanCausal<38 | Method == "TrueGeneticLiab" & MeanCausal < 200 )
     if (includeTG == 0){
       df <- df %>%
         dplyr::filter(Method != "TrueGeneticLiab")
