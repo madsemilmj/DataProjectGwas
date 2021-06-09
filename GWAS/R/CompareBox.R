@@ -11,10 +11,11 @@ CompareBox <- function(sib, includeTG){
   total_indiv <- 100000
   SNP <- 100000
   h <- 0.5
-  sib <- 1
   file <- paste("./data/BoxData","_",sib,".txt", sep="")
   if (file.exists(file)){
     df <- data.table::fread(file)
+    df <- df %>%
+      dplyr::filter(Method == "LT-FH" & MeanCausal<38 | Method == "CaseControl" & MeanCausal<38 | Method == "GWAX" & MeanCausal<38 | Method == "TrueGeneticLiab" )
     if (includeTG == 0){
       df <- df %>%
         dplyr::filter(Method != "TrueGeneticLiab")

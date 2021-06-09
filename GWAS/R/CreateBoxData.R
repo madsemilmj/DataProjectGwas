@@ -93,7 +93,7 @@ CreateBoxData <- function(sib){
         cc$CHISQ <- qchisq(cc$P,df=1,lower.tail = FALSE)
         gwax$CHISQ <- qchisq(gwax$P,df=1,lower.tail = FALSE)
         #Checking for inf in qchisq
-        TG$CHISQ <- ifelse(TG$CHISQ == Inf, 1000, TG$CHISQ)
+        TG$CHISQ <- ifelse(TG$CHISQ == Inf, 38, TG$CHISQ)
         #Check for found causals
         ltfh$causal <- ifelse(ltfh$P < (0.05)/1000000,1,0)
         gwax$causal <- ifelse(gwax$P < (0.05)/1000000,1,0)

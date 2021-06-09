@@ -43,6 +43,8 @@ zscorePlotGG <- function(total_indiv, SNP, h, sib, includeTG){
       dplyr::rename("Z_case_ctrl" = "Z")%>%
       dplyr::left_join(select(TG,c(SNP,Z)), by = c("V1" = "SNP")) %>%
       dplyr::rename("Z_TG" = "Z")
+    zscoredata <- zscoredata %>%
+      dplyr::filter(abs(Z_ltfh) != Inf & abs(Z_gwax) != Inf & abs(Z_case_ctrl) != Inf & abs(Z_TG) != Inf)
 
 
     #PLOT OF LTFH VS GWAX
